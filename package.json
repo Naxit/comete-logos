@@ -1,6 +1,6 @@
 {
   "name": "@naxit/comete-logos",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Comète logo library — React components for product logos with theme-aware appearance variants via design tokens",
   "author": "naxit",
   "license": "CC0-1.0",
