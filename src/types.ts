@@ -7,7 +7,7 @@ export type LogoAppearance = "brand" | "neutral" | "inverse";
 export type LogoType = "icon" | "logo";
 
 /** Available product names. */
-export type LogoProduct = "comete";
+export type LogoProduct = "comete" | "ontime" | "link" | "bi" | "academie" | "club" | "mce" | "mycomete";
 
 /**
  * Color overrides for logo rendering.
