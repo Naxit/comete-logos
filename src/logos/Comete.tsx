@@ -1,28 +1,37 @@
 import type { CSSProperties } from "react";
-import type { LogoProps } from "../types";
+import type { LogoColors, LogoProps } from "../types";
 
 // ---------------------------------------------------------------------------
-// Design tokens (CSS custom properties from @naxit/comete-design-tokens)
+// Default colors (hardcoded fallbacks when no tokens are provided)
 
-const TOKEN = {
-  default: "var(--logo-comete-default)",
-  neutral: "var(--logo-comete-neutral)",
-  inverted: "var(--logo-comete-inverted)",
-  gradientLight: "var(--logo-comete-gradient-light)",
-  gradientDark: "var(--logo-comete-gradient-dark)",
-} as const;
+const DEFAULTS: Record<string, LogoColors> = {
+  brand: {
+    text: "#1E3661",
+    icon: "#1E3661",
+    gradientLight: "#FFF146",
+    gradientDark: "#F8BF01",
+  },
+  neutral: {
+    text: "#224986",
+    icon: "#224986",
+    gradientLight: "#FFF146",
+    gradientDark: "#F8BF01",
+  },
+  inverse: {
+    text: "#F0F8FE",
+    icon: "#F0F8FE",
+    gradientLight: "#FFF146",
+    gradientDark: "#F8BF01",
+  },
+};
 
 // ---------------------------------------------------------------------------
-// SVG path data for the Comète icon (drop/flame shape)
-// Same path across all appearances — only fill changes.
+// SVG path data
 
 const ICON_PATH =
   "M25.1273 10.4066L0 0L10.9672 25.2733C12.7719 29.3793 16.7978 32.0694 21.1708 31.9986C27.2791 31.9278 32.0686 26.8307 31.9992 20.6009C31.9298 16.0701 29.2227 12.0349 25.1273 10.4066ZM21.3096 28.459C18.3943 28.5298 15.8261 26.7599 14.646 24.0698L7.49655 7.5749L23.8779 14.3711C26.585 15.5038 28.3203 18.1231 28.3897 21.0256C28.4591 25.0609 25.3356 28.3882 21.3096 28.459Z";
 
 const ICON_VIEWBOX = "0 0 32 32";
-
-// ---------------------------------------------------------------------------
-// Wordmark path data per appearance
 
 const WORDMARK_BRAND = {
   viewBox: "0 0 144 32",
@@ -53,33 +62,31 @@ const WORDMARK_NEUTRAL = {
 };
 
 // ---------------------------------------------------------------------------
-// Resolve fill color per appearance
+// Helpers
 
-function getTextStyle(appearance: string): CSSProperties {
-  const color =
-    appearance === "brand"
-      ? TOKEN.default
-      : appearance === "inverse"
-        ? TOKEN.inverted
-        : TOKEN.neutral;
-  return { fill: color };
+function resolveColors(appearance: string, overrides?: LogoColors): LogoColors {
+  const base = DEFAULTS[appearance] ?? DEFAULTS.brand!;
+  return overrides ?? base;
 }
 
-function getIconFill(appearance: string, gradientId: string): string | undefined {
-  // Gradient fills must use the SVG `fill` attribute (url(#id) is not a CSS value)
-  if (appearance !== "neutral") return `url(#${gradientId})`;
-  return undefined;
+function textStyle(c: LogoColors): CSSProperties {
+  return { fill: c.text };
 }
 
-function getIconStyle(appearance: string): CSSProperties | undefined {
-  if (appearance === "neutral") return { fill: TOKEN.neutral };
+function iconStyle(c: LogoColors, useGradient: boolean): CSSProperties | undefined {
+  if (useGradient) return undefined;
+  return { fill: c.icon };
+}
+
+function iconFill(useGradient: boolean, gradientId: string): string | undefined {
+  if (useGradient) return `url(#${gradientId})`;
   return undefined;
 }
 
 // ---------------------------------------------------------------------------
-// Gradient definition reused across brand and inverse appearances
+// Gradient
 
-function CometeGradient({ id, transform }: { id: string; transform: string }) {
+function CometeGradient({ id, transform, colors }: { id: string; transform: string; colors: LogoColors }) {
   return (
     <defs>
       <radialGradient
@@ -90,8 +97,8 @@ function CometeGradient({ id, transform }: { id: string; transform: string }) {
         gradientUnits="userSpaceOnUse"
         gradientTransform={transform}
       >
-        <stop style={{ stopColor: TOKEN.gradientLight }} />
-        <stop offset="0.7358" style={{ stopColor: TOKEN.gradientDark }} />
+        <stop style={{ stopColor: colors.gradientLight }} />
+        <stop offset="0.7358" style={{ stopColor: colors.gradientDark }} />
       </radialGradient>
     </defs>
   );
@@ -106,18 +113,20 @@ function CometeGradient({ id, transform }: { id: string; transform: string }) {
  * Renders the Comète icon (drop shape) or the full logo (icon + wordmark)
  * in brand, neutral, or inverse appearance.
  *
- * Colors are resolved from `@naxit/comete-design-tokens` CSS custom
- * properties (`--logo-comete-*`), so the logo adapts to light/dark theme.
+ * Pass `colors` to override fills with CSS custom properties from a
+ * design token system for theme-aware rendering.
  */
 export function Comete({
   appearance = "brand",
   type = "logo",
   size = 32,
+  colors: colorOverrides,
   className,
   ...svgProps
 }: LogoProps) {
   const gradientId = `comete-grad-${appearance}`;
   const useGradient = appearance !== "neutral";
+  const c = resolveColors(appearance, colorOverrides);
 
   // --- Icon only -----------------------------------------------------------
   if (type === "icon") {
@@ -134,13 +143,14 @@ export function Comete({
       >
         <path
           d={ICON_PATH}
-          fill={getIconFill(appearance, gradientId)}
-          style={getIconStyle(appearance)}
+          fill={iconFill(useGradient, gradientId)}
+          style={iconStyle(c, useGradient)}
         />
         {useGradient && (
           <CometeGradient
             id={gradientId}
             transform="translate(10.0825 10.3942) scale(44.2454 45.1256)"
+            colors={c}
           />
         )}
       </svg>
@@ -149,9 +159,8 @@ export function Comete({
 
   // --- Full logo (icon + wordmark) -----------------------------------------
   const data = appearance === "brand" ? WORDMARK_BRAND : WORDMARK_NEUTRAL;
-  const textStyle = getTextStyle(appearance);
+  const ts = textStyle(c);
 
-  // Compute width from viewBox aspect ratio
   const [, , vbW, vbH] = data.viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
@@ -167,17 +176,18 @@ export function Comete({
       {...svgProps}
     >
       {data.textPaths.map((d, i) => (
-        <path key={i} d={d} style={textStyle} />
+        <path key={i} d={d} style={ts} />
       ))}
       <path
         d={data.iconPath}
-        fill={getIconFill(appearance, gradientId)}
-        style={getIconStyle(appearance)}
+        fill={iconFill(useGradient, gradientId)}
+        style={iconStyle(c, useGradient)}
       />
       {useGradient && (
         <CometeGradient
           id={gradientId}
           transform={data.iconGradientTransform}
+          colors={c}
         />
       )}
     </svg>
