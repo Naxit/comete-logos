@@ -1,11 +1,20 @@
 {
   "name": "@naxit/comete-logos",
   "version": "0.2.0",
-  "description": "Comète logo library — React components for product logos with appearance variants",
+  "description": "Comète logo library — React components for product logos with theme-aware appearance variants via design tokens",
   "author": "naxit",
   "license": "CC0-1.0",
   "type": "module",
   "sideEffects": false,
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles": "./dist/logos.css"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,6 +43,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@naxit/comete-design-tokens": "^0.4.1",
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {

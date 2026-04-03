@@ -9,7 +9,14 @@ export type LogoType = "icon" | "logo";
 /** Available product names. */
 export type LogoProduct = "comete";
 
-/** Color overrides for logo rendering. */
+/**
+ * Color overrides for logo rendering.
+ *
+ * Use this only when CSS design tokens are not available (e.g. emails,
+ * static exports). In normal usage the component resolves colours from
+ * the `.comete-logo--{appearance}` CSS classes which map to Comète
+ * design-token custom properties.
+ */
 export interface LogoColors {
   /** Fill color for text/wordmark paths. */
   text: string;
@@ -30,9 +37,12 @@ export interface LogoProps extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
   /** Rendered height in pixels. Width scales proportionally. @default 32 */
   size?: number;
   /**
-   * Color overrides. When provided, these colors are used instead of
-   * the default hardcoded values. Designed to receive CSS custom
-   * properties from a design token system.
+   * Color overrides — **fallback only**.
+   *
+   * When provided, these colors are used as inline styles instead of
+   * the CSS custom-property–based classes. Useful for contexts where
+   * `@naxit/comete-design-tokens` CSS is not loaded (static exports,
+   * emails, etc.).
    */
   colors?: LogoColors;
   /** Additional CSS class name. */

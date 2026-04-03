@@ -1,0 +1,26 @@
+/* Auto-generated — do not edit manually */
+/* Maps logo appearance props to Comète design token CSS custom properties */
+
+/* ── Brand (default) ────────────────────────────────────────────────── */
+.comete-logo--brand {
+  --_logo-text: var(--logo-comete-default);
+  --_logo-icon: var(--logo-comete-default);
+  --_logo-gradient-light: var(--logo-comete-gradient-light);
+  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+}
+
+/* ── Neutral ────────────────────────────────────────────────────────── */
+.comete-logo--neutral {
+  --_logo-text: var(--logo-comete-neutral);
+  --_logo-icon: var(--logo-comete-neutral);
+  --_logo-gradient-light: var(--logo-comete-gradient-light);
+  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+}
+
+/* ── Inverse ────────────────────────────────────────────────────────── */
+.comete-logo--inverse {
+  --_logo-text: var(--logo-comete-inverted);
+  --_logo-icon: var(--logo-comete-inverted);
+  --_logo-gradient-light: var(--logo-comete-gradient-light);
+  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+}

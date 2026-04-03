@@ -2,9 +2,10 @@ import type { CSSProperties } from "react";
 import type { LogoColors, LogoProps } from "../types";
 
 // ---------------------------------------------------------------------------
-// Default colors (hardcoded fallbacks when no tokens are provided)
+// Hardcoded fallbacks — used ONLY when the `colors` prop is provided or when
+// CSS design-token custom properties are not available.
 
-const DEFAULTS: Record<string, LogoColors> = {
+const FALLBACKS: Record<string, LogoColors> = {
   brand: {
     text: "#1E3661",
     icon: "#1E3661",
@@ -64,29 +65,65 @@ const WORDMARK_NEUTRAL = {
 // ---------------------------------------------------------------------------
 // Helpers
 
-function resolveColors(appearance: string, overrides?: LogoColors): LogoColors {
-  const base = DEFAULTS[appearance] ?? DEFAULTS.brand!;
-  return overrides ?? base;
+/** Whether the `colors` prop was explicitly provided (= fallback mode). */
+function useFallback(overrides?: LogoColors): overrides is LogoColors {
+  return overrides !== undefined;
 }
 
-function textStyle(c: LogoColors): CSSProperties {
+/**
+ * Build the CSS class string for the SVG root.
+ *
+ * In token mode (no `colors` override), we add the appearance class so that
+ * CSS custom properties from `logos.css` drive the fills.
+ * In fallback mode, we skip the appearance class — inline styles take over.
+ */
+function rootClassName(appearance: string, fallback: boolean, className?: string): string {
+  const parts: string[] = [];
+  if (!fallback) parts.push(`comete-logo--${appearance}`);
+  if (className) parts.push(className);
+  return parts.join(" ") || undefined!;
+}
+
+// --- Token-driven styles (use CSS custom properties) ----------------------
+
+function tokenTextStyle(): CSSProperties {
+  return { fill: "var(--_logo-text)" };
+}
+
+function tokenIconStyle(): CSSProperties {
+  return { fill: "var(--_logo-icon)" };
+}
+
+function tokenGradientLightStyle(): CSSProperties {
+  return { stopColor: "var(--_logo-gradient-light)" };
+}
+
+function tokenGradientDarkStyle(): CSSProperties {
+  return { stopColor: "var(--_logo-gradient-dark)" };
+}
+
+// --- Fallback styles (hardcoded values) -----------------------------------
+
+function fallbackTextStyle(c: LogoColors): CSSProperties {
   return { fill: c.text };
 }
 
-function iconStyle(c: LogoColors, useGradient: boolean): CSSProperties | undefined {
-  if (useGradient) return undefined;
+function fallbackIconStyle(c: LogoColors): CSSProperties {
   return { fill: c.icon };
-}
-
-function iconFill(useGradient: boolean, gradientId: string): string | undefined {
-  if (useGradient) return `url(#${gradientId})`;
-  return undefined;
 }
 
 // ---------------------------------------------------------------------------
 // Gradient
 
-function CometeGradient({ id, transform, colors }: { id: string; transform: string; colors: LogoColors }) {
+function CometeGradient({
+  id,
+  transform,
+  fallbackColors,
+}: {
+  id: string;
+  transform: string;
+  fallbackColors?: LogoColors;
+}) {
   return (
     <defs>
       <radialGradient
@@ -97,8 +134,21 @@ function CometeGradient({ id, transform, colors }: { id: string; transform: stri
         gradientUnits="userSpaceOnUse"
         gradientTransform={transform}
       >
-        <stop style={{ stopColor: colors.gradientLight }} />
-        <stop offset="0.7358" style={{ stopColor: colors.gradientDark }} />
+        <stop
+          style={
+            fallbackColors
+              ? { stopColor: fallbackColors.gradientLight }
+              : tokenGradientLightStyle()
+          }
+        />
+        <stop
+          offset="0.7358"
+          style={
+            fallbackColors
+              ? { stopColor: fallbackColors.gradientDark }
+              : tokenGradientDarkStyle()
+          }
+        />
       </radialGradient>
     </defs>
   );
@@ -113,8 +163,13 @@ function CometeGradient({ id, transform, colors }: { id: string; transform: stri
  * Renders the Comète icon (drop shape) or the full logo (icon + wordmark)
  * in brand, neutral, or inverse appearance.
  *
- * Pass `colors` to override fills with CSS custom properties from a
- * design token system for theme-aware rendering.
+ * **Theme-aware by default**: the component applies a
+ * `.comete-logo--{appearance}` CSS class that maps to Comète design-token
+ * custom properties (`--logo-comete-*`). Light / dark theming is handled
+ * automatically via `[data-theme]` on `<html>`.
+ *
+ * Pass `colors` to bypass tokens and use explicit colour values instead
+ * (useful for emails, static exports, or contexts without CSS tokens).
  */
 export function Comete({
   appearance = "brand",
@@ -126,7 +181,13 @@ export function Comete({
 }: LogoProps) {
   const gradientId = `comete-grad-${appearance}`;
   const useGradient = appearance !== "neutral";
-  const c = resolveColors(appearance, colorOverrides);
+  const fallback = useFallback(colorOverrides);
+
+  // In fallback mode, resolve hardcoded colours.
+  const fb = fallback
+    ? colorOverrides
+    : undefined;
+  const fbResolved = fb ?? FALLBACKS[appearance] ?? FALLBACKS.brand!;
 
   // --- Icon only -----------------------------------------------------------
   if (type === "icon") {
@@ -138,19 +199,25 @@ export function Comete({
         height={size}
         fill="none"
         aria-hidden="true"
-        className={className}
+        className={rootClassName(appearance, fallback, className)}
         {...svgProps}
       >
         <path
           d={ICON_PATH}
-          fill={iconFill(useGradient, gradientId)}
-          style={iconStyle(c, useGradient)}
+          fill={useGradient ? `url(#${gradientId})` : undefined}
+          style={
+            useGradient
+              ? undefined
+              : fallback
+                ? fallbackIconStyle(fbResolved)
+                : tokenIconStyle()
+          }
         />
         {useGradient && (
           <CometeGradient
             id={gradientId}
             transform="translate(10.0825 10.3942) scale(44.2454 45.1256)"
-            colors={c}
+            fallbackColors={fallback ? fbResolved : undefined}
           />
         )}
       </svg>
@@ -159,7 +226,7 @@ export function Comete({
 
   // --- Full logo (icon + wordmark) -----------------------------------------
   const data = appearance === "brand" ? WORDMARK_BRAND : WORDMARK_NEUTRAL;
-  const ts = textStyle(c);
+  const ts = fallback ? fallbackTextStyle(fbResolved) : tokenTextStyle();
 
   const [, , vbW, vbH] = data.viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
@@ -172,7 +239,7 @@ export function Comete({
       height={size}
       fill="none"
       aria-hidden="true"
-      className={className}
+      className={rootClassName(appearance, fallback, className)}
       {...svgProps}
     >
       {data.textPaths.map((d, i) => (
@@ -180,14 +247,20 @@ export function Comete({
       ))}
       <path
         d={data.iconPath}
-        fill={iconFill(useGradient, gradientId)}
-        style={iconStyle(c, useGradient)}
+        fill={useGradient ? `url(#${gradientId})` : undefined}
+        style={
+          useGradient
+            ? undefined
+            : fallback
+              ? fallbackIconStyle(fbResolved)
+              : tokenIconStyle()
+        }
       />
       {useGradient && (
         <CometeGradient
           id={gradientId}
           transform={data.iconGradientTransform}
-          colors={c}
+          fallbackColors={fallback ? fbResolved : undefined}
         />
       )}
     </svg>
