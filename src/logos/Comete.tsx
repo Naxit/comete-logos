@@ -1,6 +1,17 @@
 import type { LogoProps } from "../types";
 
 // ---------------------------------------------------------------------------
+// Design tokens (CSS custom properties from @naxit/comete-design-tokens)
+
+const TOKEN = {
+  default: "var(--logo-comete-default)",
+  neutral: "var(--logo-comete-neutral)",
+  inverted: "var(--logo-comete-inverted)",
+  gradientLight: "var(--logo-comete-gradient-light)",
+  gradientDark: "var(--logo-comete-gradient-dark)",
+} as const;
+
+// ---------------------------------------------------------------------------
 // SVG path data for the Comète icon (drop/flame shape)
 // Same path across all appearances — only fill changes.
 
@@ -10,13 +21,10 @@ const ICON_PATH =
 const ICON_VIEWBOX = "0 0 32 32";
 
 // ---------------------------------------------------------------------------
-// Wordmark paths (the "comète" text + integrated icon)
-// Brand and neutral share the same geometry; inverse has slightly different metrics.
+// Wordmark path data per appearance
 
 const WORDMARK_BRAND = {
   viewBox: "0 0 144 32",
-  textFill: "#1E3661",
-  // The icon in the logo is larger and offset to replace the "o" in "comète"
   iconPath:
     "M41.8836 10.4066L16.2942 0L27.463 25.2733C29.3009 29.3793 33.4009 32.0694 37.8543 31.9986C44.0749 31.9278 48.9524 26.8307 48.8817 20.6009C48.8111 16.0701 46.0542 12.0349 41.8836 10.4066ZM37.9957 28.459C35.0267 28.5298 32.4112 26.7599 31.2095 24.0698L23.9286 7.5749L40.6112 14.3711C43.368 15.5038 45.1352 18.1231 45.2059 21.0256C45.2766 25.0609 42.0956 28.3882 37.9957 28.459Z",
   iconGradientTransform: "translate(26.5621 10.3942) scale(45.059 45.1256)",
@@ -31,10 +39,9 @@ const WORDMARK_BRAND = {
 
 const WORDMARK_NEUTRAL = {
   viewBox: "0 0 142 32",
-  textFill: "#1E3661",
   iconPath:
     "M41.1273 10.4066L16 0L26.9672 25.2733C28.7719 29.3793 32.7978 32.0694 37.1708 31.9986C43.2791 31.9278 48.0686 26.8307 47.9992 20.6009C47.9298 16.0701 45.2227 12.0349 41.1273 10.4066ZM37.3096 28.459C34.3943 28.5298 31.8261 26.7599 30.646 24.0698L23.4966 7.5749L39.8779 14.3711C42.585 15.5038 44.3203 18.1231 44.3897 21.0256C44.4591 25.0609 41.3356 28.3882 37.3096 28.459Z",
-  iconFill: "#1E3661",
+  iconGradientTransform: "translate(26.0825 10.3942) scale(44.2454 45.1256)",
   textPaths: [
     "M10.5343 31.9079C7.5144 31.9079 4.9995 30.8837 2.9997 28.8353C0.9999 26.7868 0 24.257 0 21.2151C0 18.1835 0.9999 15.6434 3.0098 13.595C5.0096 11.5466 7.5245 10.5223 10.5444 10.5223C12.524 10.5223 14.3016 11.0037 15.8772 11.9665C17.4528 12.9292 18.6244 14.2198 19.4021 15.8483L16.4731 17.5587C15.9681 16.473 15.1803 15.6127 14.1299 14.9572C13.0694 14.3119 11.8776 13.9842 10.5444 13.9842C8.5446 13.9842 6.868 14.6704 5.5146 16.0531C4.1612 17.4358 3.4946 19.1565 3.4946 21.2151C3.4946 23.2431 4.1713 24.9535 5.5146 26.3362C6.868 27.7189 8.5446 28.4051 10.5444 28.4051C11.8776 28.4051 13.0795 28.0876 14.1501 27.4526C15.2207 26.8176 16.0287 25.9572 16.5943 24.8716L19.5637 26.623C18.7052 28.2207 17.4831 29.501 15.8772 30.4638C14.2612 31.4265 12.4836 31.9079 10.5343 31.9079Z",
     "M77.7195 31.3753V18.8902C77.7195 16.2682 75.6187 14.1378 73.0331 14.1378C70.4576 14.1378 68.3568 16.2579 68.3467 18.8697V31.3753H64.8723V18.8697C64.8622 16.2579 62.7614 14.1378 60.1859 14.1378C57.6003 14.1378 55.4995 16.2682 55.4995 18.8902V31.3753H52.0352L52.0251 18.5726C52.0251 14.0047 55.6914 10.297 60.1859 10.297C62.4887 10.297 64.7006 11.3007 66.2459 13.0521L66.6095 13.4618L66.9731 13.0521C68.5184 11.3007 70.7303 10.297 73.0331 10.297C77.5377 10.297 81.1939 14.0149 81.1939 18.5726V31.3753H77.7195Z",
@@ -44,10 +51,19 @@ const WORDMARK_NEUTRAL = {
   ],
 };
 
-const WORDMARK_INVERSE = {
-  ...WORDMARK_NEUTRAL,
-  textFill: "#F7F8F8",
-};
+// ---------------------------------------------------------------------------
+// Resolve fill color per appearance
+
+function getTextFill(appearance: string): string {
+  if (appearance === "brand") return TOKEN.default;
+  if (appearance === "inverse") return TOKEN.inverted;
+  return TOKEN.neutral;
+}
+
+function getIconFill(appearance: string, gradientId: string): string {
+  if (appearance === "neutral") return TOKEN.neutral;
+  return `url(#${gradientId})`;
+}
 
 // ---------------------------------------------------------------------------
 // Gradient definition reused across brand and inverse appearances
@@ -63,8 +79,8 @@ function CometeGradient({ id, transform }: { id: string; transform: string }) {
         gradientUnits="userSpaceOnUse"
         gradientTransform={transform}
       >
-        <stop stopColor="#FFF146" />
-        <stop offset="0.7358" stopColor="#F8BF01" />
+        <stop stopColor={TOKEN.gradientLight} />
+        <stop offset="0.7358" stopColor={TOKEN.gradientDark} />
       </radialGradient>
     </defs>
   );
@@ -78,6 +94,9 @@ function CometeGradient({ id, transform }: { id: string; transform: string }) {
  *
  * Renders the Comète icon (drop shape) or the full logo (icon + wordmark)
  * in brand, neutral, or inverse appearance.
+ *
+ * Colors are resolved from `@naxit/comete-design-tokens` CSS custom
+ * properties (`--logo-comete-*`), so the logo adapts to light/dark theme.
  */
 export function Comete({
   appearance = "brand",
@@ -87,10 +106,10 @@ export function Comete({
   ...svgProps
 }: LogoProps) {
   const gradientId = `comete-grad-${appearance}`;
+  const useGradient = appearance !== "neutral";
 
   // --- Icon only -----------------------------------------------------------
   if (type === "icon") {
-    const useGradient = appearance !== "neutral";
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +123,7 @@ export function Comete({
       >
         <path
           d={ICON_PATH}
-          fill={useGradient ? `url(#${gradientId})` : "#1E3661"}
+          fill={getIconFill(appearance, gradientId)}
         />
         {useGradient && (
           <CometeGradient
@@ -117,14 +136,9 @@ export function Comete({
   }
 
   // --- Full logo (icon + wordmark) -----------------------------------------
-  const data =
-    appearance === "brand"
-      ? WORDMARK_BRAND
-      : appearance === "inverse"
-        ? WORDMARK_INVERSE
-        : WORDMARK_NEUTRAL;
+  const data = appearance === "brand" ? WORDMARK_BRAND : WORDMARK_NEUTRAL;
+  const textFill = getTextFill(appearance);
 
-  const useGradient = appearance !== "neutral";
   // Compute width from viewBox aspect ratio
   const [, , vbW, vbH] = data.viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
@@ -140,27 +154,17 @@ export function Comete({
       className={className}
       {...svgProps}
     >
-      {/* Wordmark text paths */}
       {data.textPaths.map((d, i) => (
-        <path key={i} d={d} fill={data.textFill} />
+        <path key={i} d={d} fill={textFill} />
       ))}
-      {/* Integrated icon (replaces the "o" in comète) */}
       <path
         d={data.iconPath}
-        fill={
-          useGradient
-            ? `url(#${gradientId})`
-            : (data as typeof WORDMARK_NEUTRAL).iconFill ?? data.textFill
-        }
+        fill={getIconFill(appearance, gradientId)}
       />
       {useGradient && (
         <CometeGradient
           id={gradientId}
-          transform={
-            appearance === "brand"
-              ? WORDMARK_BRAND.iconGradientTransform
-              : "translate(26.0825 10.3942) scale(44.2454 45.1256)"
-          }
+          transform={data.iconGradientTransform}
         />
       )}
     </svg>
