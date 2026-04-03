@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { LogoProps } from "../types";
 
 // ---------------------------------------------------------------------------
@@ -54,15 +55,25 @@ const WORDMARK_NEUTRAL = {
 // ---------------------------------------------------------------------------
 // Resolve fill color per appearance
 
-function getTextFill(appearance: string): string {
-  if (appearance === "brand") return TOKEN.default;
-  if (appearance === "inverse") return TOKEN.inverted;
-  return TOKEN.neutral;
+function getTextStyle(appearance: string): CSSProperties {
+  const color =
+    appearance === "brand"
+      ? TOKEN.default
+      : appearance === "inverse"
+        ? TOKEN.inverted
+        : TOKEN.neutral;
+  return { fill: color };
 }
 
-function getIconFill(appearance: string, gradientId: string): string {
-  if (appearance === "neutral") return TOKEN.neutral;
-  return `url(#${gradientId})`;
+function getIconFill(appearance: string, gradientId: string): string | undefined {
+  // Gradient fills must use the SVG `fill` attribute (url(#id) is not a CSS value)
+  if (appearance !== "neutral") return `url(#${gradientId})`;
+  return undefined;
+}
+
+function getIconStyle(appearance: string): CSSProperties | undefined {
+  if (appearance === "neutral") return { fill: TOKEN.neutral };
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -79,8 +90,8 @@ function CometeGradient({ id, transform }: { id: string; transform: string }) {
         gradientUnits="userSpaceOnUse"
         gradientTransform={transform}
       >
-        <stop stopColor={TOKEN.gradientLight} />
-        <stop offset="0.7358" stopColor={TOKEN.gradientDark} />
+        <stop style={{ stopColor: TOKEN.gradientLight }} />
+        <stop offset="0.7358" style={{ stopColor: TOKEN.gradientDark }} />
       </radialGradient>
     </defs>
   );
@@ -124,6 +135,7 @@ export function Comete({
         <path
           d={ICON_PATH}
           fill={getIconFill(appearance, gradientId)}
+          style={getIconStyle(appearance)}
         />
         {useGradient && (
           <CometeGradient
@@ -137,7 +149,7 @@ export function Comete({
 
   // --- Full logo (icon + wordmark) -----------------------------------------
   const data = appearance === "brand" ? WORDMARK_BRAND : WORDMARK_NEUTRAL;
-  const textFill = getTextFill(appearance);
+  const textStyle = getTextStyle(appearance);
 
   // Compute width from viewBox aspect ratio
   const [, , vbW, vbH] = data.viewBox.split(" ").map(Number);
@@ -155,11 +167,12 @@ export function Comete({
       {...svgProps}
     >
       {data.textPaths.map((d, i) => (
-        <path key={i} d={d} fill={textFill} />
+        <path key={i} d={d} style={textStyle} />
       ))}
       <path
         d={data.iconPath}
         fill={getIconFill(appearance, gradientId)}
+        style={getIconStyle(appearance)}
       />
       {useGradient && (
         <CometeGradient
