@@ -5,6 +5,7 @@
 .comete-logo--brand {
   --_logo-text: var(--logo-comete-default);
   --_logo-icon: var(--logo-comete-default);
+  --_logo-subtle: var(--logo-comete-subtle);
   --_logo-gradient-light: var(--logo-comete-gradient-light);
   --_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
@@ -13,14 +14,16 @@
 .comete-logo--neutral {
   --_logo-text: var(--logo-comete-neutral);
   --_logo-icon: var(--logo-comete-neutral);
-  --_logo-gradient-light: var(--logo-comete-gradient-light);
-  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+  --_logo-subtle: var(--logo-comete-neutral);
+  --_logo-gradient-light: var(--logo-comete-neutral);
+  --_logo-gradient-dark: var(--logo-comete-neutral);
 }
 
 /* ── Inverse ────────────────────────────────────────────────────────── */
 .comete-logo--inverse {
   --_logo-text: var(--logo-comete-inverted);
   --_logo-icon: var(--logo-comete-inverted);
+  --_logo-subtle: var(--logo-comete-inverted);
   --_logo-gradient-light: var(--logo-comete-gradient-light);
   --_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
