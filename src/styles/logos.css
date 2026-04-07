@@ -28,35 +28,69 @@
   --_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
 
-/* ── Light/dark body switching ──────────────────────────────────────── */
-/* Brand logos have two SVG bodies:
-   - .comete-logo__light: multi-path (text exterior + gradient interior)
-   - .comete-logo__dark:  evenodd single path with gradient (cutout for picto)
-   Show the correct one based on data-theme. */
+/* ══════════════════════════════════════════════════════════════════════
+   Light/dark SVG body switching
+   ──────────────────────────────────────────────────────────────────────
+   .comete-logo__light = multi-path (text exterior + gradient interior)
+   .comete-logo__dark  = evenodd single path (gradient or solid, with cutout)
+
+   Rules:
+   ┌──────────────┬─────────────┬──────────────┐
+   │              │ Light theme │ Dark theme   │
+   ├──────────────┼─────────────┼──────────────┤
+   │ Brand        │ light body  │ dark body    │
+   │ Neutral      │ dark body   │ dark body    │
+   │ Inverse      │ dark body   │ light body   │
+   └──────────────┴─────────────┴──────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Default (light theme) ──────────────────────────────────────────── */
+
+/* Brand light: show light body (multi-path) */
+.comete-logo--brand .comete-logo__light {
+  display: block;
+}
 
 .comete-logo--brand .comete-logo__dark {
   display: none;
 }
 
-.comete-logo--brand .comete-logo__light {
+/* Neutral: always show dark body (evenodd) */
+.comete-logo--neutral .comete-logo__light {
+  display: none;
+}
+
+.comete-logo--neutral .comete-logo__dark {
   display: block;
+}
+
+/* Inverse light: show dark body (evenodd + gradient) */
+.comete-logo--inverse .comete-logo__light {
+  display: none;
+}
+
+.comete-logo--inverse .comete-logo__dark {
+  display: block;
+}
+
+/* ── Dark theme overrides ───────────────────────────────────────────── */
+
+/* Brand dark: switch to dark body (evenodd + gradient with cutout) */
+[data-theme="dark"] .comete-logo--brand .comete-logo__light {
+  display: none;
 }
 
 [data-theme="dark"] .comete-logo--brand .comete-logo__dark {
   display: block;
 }
 
-[data-theme="dark"] .comete-logo--brand .comete-logo__light {
-  display: none;
-}
+/* Neutral dark: stays on dark body (no change needed) */
 
-/* Neutral and inverse always use the evenodd body */
-.comete-logo--neutral .comete-logo__light,
-.comete-logo--inverse .comete-logo__light {
-  display: none;
-}
-
-.comete-logo--neutral .comete-logo__dark,
-.comete-logo--inverse .comete-logo__dark {
+/* Inverse dark: switch to light body (text exterior + gradient interior) */
+[data-theme="dark"] .comete-logo--inverse .comete-logo__light {
   display: block;
+}
+
+[data-theme="dark"] .comete-logo--inverse .comete-logo__dark {
+  display: none;
 }
