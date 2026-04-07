@@ -1,30 +1,6 @@
 import type { CSSProperties } from "react";
 import type { LogoColors, LogoProps } from "../types";
-
-// ---------------------------------------------------------------------------
-// Hardcoded fallbacks — used ONLY when the `colors` prop is provided or when
-// CSS design-token custom properties are not available.
-
-const FALLBACKS: Record<string, LogoColors> = {
-  brand: {
-    text: "#1E3661",
-    icon: "#1E3661",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
-  neutral: {
-    text: "#224986",
-    icon: "#224986",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
-  inverse: {
-    text: "#F0F8FE",
-    icon: "#F0F8FE",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
-};
+import { getFallback } from "../fallbacks";
 
 // ---------------------------------------------------------------------------
 // SVG path data
@@ -187,7 +163,7 @@ export function Comete({
   const fb = fallback
     ? colorOverrides
     : undefined;
-  const fbResolved = fb ?? FALLBACKS[appearance] ?? FALLBACKS.brand!;
+  const fbResolved = fb ?? getFallback(appearance);
 
   // --- Icon only -----------------------------------------------------------
   if (type === "icon") {
