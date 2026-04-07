@@ -27,3 +27,36 @@
   --_logo-gradient-light: var(--logo-comete-gradient-light);
   --_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
+
+/* ── Light/dark body switching ──────────────────────────────────────── */
+/* Brand logos have two SVG bodies:
+   - .comete-logo__light: multi-path (text exterior + gradient interior)
+   - .comete-logo__dark:  evenodd single path with gradient (cutout for picto)
+   Show the correct one based on data-theme. */
+
+.comete-logo--brand .comete-logo__dark {
+  display: none;
+}
+
+.comete-logo--brand .comete-logo__light {
+  display: block;
+}
+
+[data-theme="dark"] .comete-logo--brand .comete-logo__dark {
+  display: block;
+}
+
+[data-theme="dark"] .comete-logo--brand .comete-logo__light {
+  display: none;
+}
+
+/* Neutral and inverse always use the evenodd body */
+.comete-logo--neutral .comete-logo__light,
+.comete-logo--inverse .comete-logo__light {
+  display: none;
+}
+
+.comete-logo--neutral .comete-logo__dark,
+.comete-logo--inverse .comete-logo__dark {
+  display: block;
+}
