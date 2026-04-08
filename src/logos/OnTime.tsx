@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { ReactElement } from "react";
 import type { LogoProps } from "../types";
 import { LETTER_C, LETTER_M, LETTER_E_ACCENT, LETTER_T, LETTER_E } from "../wordmark-paths";
@@ -8,15 +9,10 @@ import { LETTER_C, LETTER_M, LETTER_E_ACCENT, LETTER_T, LETTER_E } from "../word
 const VIEWBOX = "0 0 286 32";
 
 // ---------------------------------------------------------------------------
-// Gradient IDs — MUST be unique across co-existing SVGs in the DOM.
-//
-// WHY: Both LightBody and DarkBody are rendered simultaneously (one hidden
-// via CSS `display:none`). If they shared the same gradient ID, the browser
-// could resolve the wrong `<defs>` — especially when the hidden SVG's defs
-// get garbage-collected or ignored on some engines.
+// Gradient IDs — generated per-instance via useId() to avoid collisions when
+// multiple instances of this component coexist in the same document (e.g. a
+// story rendering brand + neutral + inverse simultaneously).
 // ---------------------------------------------------------------------------
-const LIGHT_GRAD_ID = "ontime-light-grad";
-const DARK_GRAD_ID = "ontime-dark-grad";
 
 // ---------------------------------------------------------------------------
 // Shared gradient transform — same for both bodies since the icon geometry
@@ -41,7 +37,7 @@ const GRAD_TRANSFORM = "translate(26.8825 10.3942) scale(44.2455 45.1256)";
 // Visible in: brand appearance (all themes) — see logos.css switching rules.
 // ═══════════════════════════════════════════════════════════════════════════
 
-function LightBody() {
+function LightBody({ lightGradId }: { lightGradId: string }) {
   return (
     <>
       {/* ── "Comète" wordmark ── */}
@@ -58,7 +54,7 @@ function LightBody() {
            WHY evenodd: the path combines the circle outline AND the clock
            hands/dial. evenodd makes the clock area transparent, revealing
            the solid-coloured outer silhouette behind it. ── */}
-      <path fillRule="evenodd" clipRule="evenodd" d="M37.7996 30.2252C36.4968 30.2252 35.2785 29.9785 34.1446 29.4851C33.0108 28.9919 32.0198 28.3211 31.1717 27.4728C30.3233 26.6247 29.6526 25.6337 29.1593 24.4998C28.6659 23.366 28.4192 22.1477 28.4192 20.8449C28.4192 19.542 28.6659 18.3237 29.1593 17.1899C29.6526 16.056 30.3233 15.065 31.1717 14.2169C32.0198 13.3686 33.0108 12.6978 34.1446 12.2046C35.2785 11.7112 36.4927 11.4645 37.7873 11.4645C39.0338 11.4645 40.2621 11.7212 41.4093 12.2046C42.8627 12.817 44.1066 13.7254 45.1141 14.9542C45.8031 15.7945 46.2727 16.7113 46.6356 17.7128C46.9985 18.7143 47.18 19.7596 47.18 20.8488C47.18 22.149 46.9333 23.366 46.4399 24.4998C45.9467 25.6337 45.2759 26.6247 44.4276 27.4728C43.5794 28.3211 42.5884 28.9919 41.4546 29.4851C40.3208 29.9785 39.1024 30.2252 37.7996 30.2252ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${LIGHT_GRAD_ID})`} />
+      <path fillRule="evenodd" clipRule="evenodd" d="M37.7996 30.2252C36.4968 30.2252 35.2785 29.9785 34.1446 29.4851C33.0108 28.9919 32.0198 28.3211 31.1717 27.4728C30.3233 26.6247 29.6526 25.6337 29.1593 24.4998C28.6659 23.366 28.4192 22.1477 28.4192 20.8449C28.4192 19.542 28.6659 18.3237 29.1593 17.1899C29.6526 16.056 30.3233 15.065 31.1717 14.2169C32.0198 13.3686 33.0108 12.6978 34.1446 12.2046C35.2785 11.7112 36.4927 11.4645 37.7873 11.4645C39.0338 11.4645 40.2621 11.7212 41.4093 12.2046C42.8627 12.817 44.1066 13.7254 45.1141 14.9542C45.8031 15.7945 46.2727 16.7113 46.6356 17.7128C46.9985 18.7143 47.18 19.7596 47.18 20.8488C47.18 22.149 46.9333 23.366 46.4399 24.4998C45.9467 25.6337 45.2759 26.6247 44.4276 27.4728C43.5794 28.3211 42.5884 28.9919 41.4546 29.4851C40.3208 29.9785 39.1024 30.2252 37.7996 30.2252ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${lightGradId})`} />
 
       {/* ── "on time" wordmark — uses --_logo-subtle for lighter weight ──
            WHY subtle: in brand mode, "on time" is visually secondary to
@@ -74,7 +70,7 @@ function LightBody() {
 
       {/* ── Gradient definition for the inner circle ── */}
       <defs>
-        <radialGradient id={LIGHT_GRAD_ID} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
+        <radialGradient id={lightGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
           <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
           <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
         </radialGradient>
@@ -107,7 +103,7 @@ function LightBody() {
 // Visible in: neutral and inverse appearances (all themes) — see logos.css.
 // ═══════════════════════════════════════════════════════════════════════════
 
-function DarkBody() {
+function DarkBody({ darkGradId }: { darkGradId: string }) {
   return (
     <>
       {/* ── "Comète" wordmark ── */}
@@ -123,7 +119,7 @@ function DarkBody() {
            • brand/inverse → real yellow gradient → clock cutout visible
            • neutral → both stops are the same solid colour → flat fill,
              but evenodd still carves out the clock shape correctly ── */}
-      <path fillRule="evenodd" clipRule="evenodd" d="M16.8 0L27.7324 25.3026C29.493 29.3793 33.4442 32 37.7947 32H37.9687C44.0388 31.9064 48.8908 26.8001 48.7987 20.6123C48.727 16.1092 46.0247 12.0741 41.9301 10.3893L16.8 0ZM34.1446 29.4851C35.2785 29.9785 36.4968 30.2252 37.7996 30.2252C39.1024 30.2252 40.3208 29.9785 41.4546 29.4851C42.5884 28.9919 43.5794 28.3211 44.4276 27.4728C45.2759 26.6247 45.9467 25.6337 46.4399 24.4998C46.9333 23.366 47.18 22.149 47.18 20.8488C47.18 19.7596 46.9985 18.7143 46.6356 17.7128C46.2727 16.7113 45.8031 15.7945 45.1141 14.9542C44.1066 13.7254 42.8627 12.817 41.4093 12.2046C40.2621 11.7212 39.0338 11.4645 37.7873 11.4645C36.4927 11.4645 35.2785 11.7112 34.1446 12.2046C33.0108 12.6978 32.0198 13.3686 31.1717 14.2169C30.3233 15.065 29.6526 16.056 29.1593 17.1899C28.6659 18.3237 28.4192 19.542 28.4192 20.8449C28.4192 22.1477 28.6659 23.366 29.1593 24.4998C29.6526 25.6337 30.3233 26.6247 31.1717 27.4728C32.0198 28.3211 33.0108 28.9919 34.1446 29.4851ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${DARK_GRAD_ID})`} />
+      <path fillRule="evenodd" clipRule="evenodd" d="M16.8 0L27.7324 25.3026C29.493 29.3793 33.4442 32 37.7947 32H37.9687C44.0388 31.9064 48.8908 26.8001 48.7987 20.6123C48.727 16.1092 46.0247 12.0741 41.9301 10.3893L16.8 0ZM34.1446 29.4851C35.2785 29.9785 36.4968 30.2252 37.7996 30.2252C39.1024 30.2252 40.3208 29.9785 41.4546 29.4851C42.5884 28.9919 43.5794 28.3211 44.4276 27.4728C45.2759 26.6247 45.9467 25.6337 46.4399 24.4998C46.9333 23.366 47.18 22.149 47.18 20.8488C47.18 19.7596 46.9985 18.7143 46.6356 17.7128C46.2727 16.7113 45.8031 15.7945 45.1141 14.9542C44.1066 13.7254 42.8627 12.817 41.4093 12.2046C40.2621 11.7212 39.0338 11.4645 37.7873 11.4645C36.4927 11.4645 35.2785 11.7112 34.1446 12.2046C33.0108 12.6978 32.0198 13.3686 31.1717 14.2169C30.3233 15.065 29.6526 16.056 29.1593 17.1899C28.6659 18.3237 28.4192 19.542 28.4192 20.8449C28.4192 22.1477 28.6659 23.366 29.1593 24.4998C29.6526 25.6337 30.3233 26.6247 31.1717 27.4728C32.0198 28.3211 33.0108 28.9919 34.1446 29.4851ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${darkGradId})`} />
 
       {/* ── "on time" wordmark — subtle weight, same as LightBody ──
            WHY --_logo-subtle (not --_logo-icon): keeps visual hierarchy
@@ -141,7 +137,7 @@ function DarkBody() {
            handle the differentiation. For neutral, both stops resolve to the
            same solid colour, so the gradient is visually flat. ── */}
       <defs>
-        <radialGradient id={DARK_GRAD_ID} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
+        <radialGradient id={darkGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
           <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
           <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
         </radialGradient>
@@ -191,6 +187,12 @@ export function OnTime({
   const [,, vbW, vbH] = VIEWBOX.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
+  // Per-instance unique gradient IDs to avoid collisions when multiple
+  // instances of this logo coexist in the same document.
+  const uid = useId();
+  const lightGradId = `${uid}l`;
+  const darkGradId = `${uid}d`;
+
   return (
     <span className={rootClass} style={{ display: "inline-flex" }}>
       {/* WHY two sibling SVGs: CSS display:block/none switches between them.
@@ -204,7 +206,7 @@ export function OnTime({
         aria-hidden="true"
         className="comete-logo__light"
       >
-        <LightBody />
+        <LightBody lightGradId={lightGradId} />
       </svg>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +217,7 @@ export function OnTime({
         aria-hidden="true"
         className="comete-logo__dark"
       >
-        <DarkBody />
+        <DarkBody darkGradId={darkGradId} />
       </svg>
     </span>
   );

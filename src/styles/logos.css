@@ -92,10 +92,27 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Dark theme — NO counter-swap needed
+   Dark theme — inverse switches back to LightBody
    ──────────────────────────────────────────────────────────────────────
-   The design tokens (--logo-comete-default, --logo-comete-inverted, etc.)
-   are already theme-aware: they swap values between light and dark themes
-   at the token definition level. So brand → default → #F0F8FE in dark,
-   and inverse → inverted → #1E3661 in dark, which is correct.
+   Design tokens are already theme-aware (no counter-swap needed for
+   color values). But for inverse in dark mode, we need LightBody to be
+   visible so that dark-inverse is visually identical to light-brand
+   (same token resolves to the same color via the theme-aware system).
+
+   ┌──────────────┬───────────────────┬───────────────────┐
+   │ Appearance   │ Light theme       │ Dark theme        │
+   ├──────────────┼───────────────────┼───────────────────┤
+   │ Brand        │ LightBody         │ DarkBody          │
+   │ Neutral      │ DarkBody          │ DarkBody          │
+   │ Inverse      │ DarkBody          │ LightBody         │
+   └──────────────┴───────────────────┴───────────────────┘
    ══════════════════════════════════════════════════════════════════════ */
+
+/* Inverse dark: LightBody (identical appearance to light-brand) */
+[data-theme="dark"] .comete-logo--inverse .comete-logo__light {
+  display: block;
+}
+
+[data-theme="dark"] .comete-logo--inverse .comete-logo__dark {
+  display: none;
+}
