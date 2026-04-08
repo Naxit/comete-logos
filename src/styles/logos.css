@@ -40,28 +40,37 @@
    .comete-logo__light = multi-path (text exterior + gradient interior)
    .comete-logo__dark  = evenodd single path (gradient or solid, with cutout)
 
-   WHY appearance-only (not theme-driven):
-   The SVG *structure* depends on how the comet icon is built — brand
-   uses separate paths (outer + inner circle), while neutral/inverse
-   use a single compound evenodd path. This structure is fixed per
-   appearance and does NOT change when the theme switches.
+   Brand switches body with the theme:
+   - Light theme → LightBody (solid outer silhouette + gradient inner circle)
+   - Dark theme  → DarkBody  (full gradient comet with evenodd cutout)
 
-   ┌──────────────┬──────────────┐
-   │ Appearance   │ Body         │
-   ├──────────────┼──────────────┤
-   │ Brand        │ LightBody    │
-   │ Neutral      │ DarkBody     │
-   │ Inverse      │ DarkBody     │
-   └──────────────┴──────────────┘
+   Neutral / Inverse always use DarkBody regardless of theme.
+
+   ┌──────────────┬───────────────────┬───────────────────┐
+   │ Appearance   │ Light theme       │ Dark theme        │
+   ├──────────────┼───────────────────┼───────────────────┤
+   │ Brand        │ LightBody         │ DarkBody          │
+   │ Neutral      │ DarkBody          │ DarkBody          │
+   │ Inverse      │ DarkBody          │ DarkBody          │
+   └──────────────┴───────────────────┴───────────────────┘
    ══════════════════════════════════════════════════════════════════════ */
 
-/* Brand: always LightBody (multi-path with separate gradient circle) */
+/* Brand light: LightBody (multi-path with separate gradient circle) */
 .comete-logo--brand .comete-logo__light {
   display: block;
 }
 
 .comete-logo--brand .comete-logo__dark {
   display: none;
+}
+
+/* Brand dark: DarkBody (full gradient comet with evenodd cutout) */
+[data-theme="dark"] .comete-logo--brand .comete-logo__light {
+  display: none;
+}
+
+[data-theme="dark"] .comete-logo--brand .comete-logo__dark {
+  display: block;
 }
 
 /* Neutral: always DarkBody (evenodd compound, solid fill) */
