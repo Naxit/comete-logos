@@ -83,26 +83,10 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Dark theme token overrides
+   Dark theme — NO counter-swap needed
    ──────────────────────────────────────────────────────────────────────
-   WHY these overrides exist:
-   Brand and inverse appearances are visually theme-independent — brand
-   always looks "dark on light" and inverse always looks "light on dark".
-   But the design tokens swap between themes (default ↔ inverted), so we
-   must counter-swap the token references in dark mode to keep the same
-   visual output.
-   Neutral needs no override because --logo-comete-neutral is already
-   theme-aware and produces the correct value in each theme.
+   The design tokens (--logo-comete-default, --logo-comete-inverted, etc.)
+   are already theme-aware: they swap values between light and dark themes
+   at the token definition level. So brand → default → #F0F8FE in dark,
+   and inverse → inverted → #1E3661 in dark, which is correct.
    ══════════════════════════════════════════════════════════════════════ */
-
-/* Brand dark: swap default → inverted to keep dark-blue text (#1E3661) */
-[data-theme="dark"] .comete-logo--brand {
-  --_logo-text: var(--logo-comete-inverted);
-  --_logo-icon: var(--logo-comete-inverted);
-}
-
-/* Inverse dark: swap inverted → default to keep light text (#F0F8FE) */
-[data-theme="dark"] .comete-logo--inverse {
-  --_logo-text: var(--logo-comete-default);
-  --_logo-icon: var(--logo-comete-default);
-}
