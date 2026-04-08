@@ -37,7 +37,7 @@ const GRAD_TRANSFORM = "translate(26.8825 10.3942) scale(44.2455 45.1256)";
 // This variant is used when the background is light enough that the
 // gradient-on-solid contrast reads correctly.
 //
-// Visible in: light-brand, dark-inverse (see logos.css switching rules).
+// Visible in: brand appearance (all themes) — see logos.css switching rules.
 // ═══════════════════════════════════════════════════════════════════════════
 
 function LightBody() {
@@ -103,8 +103,7 @@ function LightBody() {
 // to the same solid colour (--logo-comete-neutral), so the gradient
 // renders as a flat fill — no visual gradient, correct solid cutout.
 //
-// Visible in: light-neutral, light-inverse, dark-brand, dark-neutral
-// (see logos.css switching rules).
+// Visible in: neutral and inverse appearances (all themes) — see logos.css.
 // ═══════════════════════════════════════════════════════════════════════════
 
 function DarkBody() {
@@ -167,15 +166,19 @@ function DarkBody() {
  *     cutout is achieved via the `evenodd` fill-rule. Used on dark
  *     backgrounds and for the neutral appearance.
  *
- * The CSS in `logos.css` toggles visibility based on appearance × theme:
+ * The CSS in `logos.css` toggles visibility based on appearance only
+ * (the theme does NOT affect which body is shown):
  *
- * ┌──────────────┬─────────────┬──────────────┐
- * │              │ Light theme │ Dark theme   │
- * ├──────────────┼─────────────┼──────────────┤
- * │ Brand        │ LightBody   │ DarkBody     │
- * │ Neutral      │ DarkBody    │ DarkBody     │
- * │ Inverse      │ DarkBody    │ LightBody    │
- * └──────────────┴─────────────┴──────────────┘
+ * ┌──────────────┬──────────────┐
+ * │ Appearance   │ Body         │
+ * ├──────────────┼──────────────┤
+ * │ Brand        │ LightBody    │
+ * │ Neutral      │ DarkBody     │
+ * │ Inverse      │ DarkBody     │
+ * └──────────────┴──────────────┘
+ *
+ * Dark theme token overrides (in CSS) swap default↔inverted so that
+ * brand and inverse keep the same visual output regardless of theme.
  */
 export function OnTime({
   appearance = "brand",

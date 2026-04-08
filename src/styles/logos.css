@@ -20,10 +20,16 @@
 }
 
 /* ── Inverse ────────────────────────────────────────────────────────── */
+/*
+ * WHY --_logo-subtle uses `subtle` (not `inverted`):
+ * The "on time" wordmark is visually secondary. Using the subtle token
+ * gives it a muted tone (#596B70 light / #B5C1C4 dark) rather than
+ * the full inverted text colour.
+ */
 .comete-logo--inverse {
   --_logo-text: var(--logo-comete-inverted);
   --_logo-icon: var(--logo-comete-inverted);
-  --_logo-subtle: var(--logo-comete-inverted);
+  --_logo-subtle: var(--logo-comete-subtle);
   --_logo-gradient-light: var(--logo-comete-gradient-light);
   --_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
@@ -34,19 +40,22 @@
    .comete-logo__light = multi-path (text exterior + gradient interior)
    .comete-logo__dark  = evenodd single path (gradient or solid, with cutout)
 
-   Rules:
-   ┌──────────────┬─────────────┬──────────────┐
-   │              │ Light theme │ Dark theme   │
-   ├──────────────┼─────────────┼──────────────┤
-   │ Brand        │ light body  │ dark body    │
-   │ Neutral      │ dark body   │ dark body    │
-   │ Inverse      │ dark body   │ light body   │
-   └──────────────┴─────────────┴──────────────┘
+   WHY appearance-only (not theme-driven):
+   The SVG *structure* depends on how the comet icon is built — brand
+   uses separate paths (outer + inner circle), while neutral/inverse
+   use a single compound evenodd path. This structure is fixed per
+   appearance and does NOT change when the theme switches.
+
+   ┌──────────────┬──────────────┐
+   │ Appearance   │ Body         │
+   ├──────────────┼──────────────┤
+   │ Brand        │ LightBody    │
+   │ Neutral      │ DarkBody     │
+   │ Inverse      │ DarkBody     │
+   └──────────────┴──────────────┘
    ══════════════════════════════════════════════════════════════════════ */
 
-/* ── Default (light theme) ──────────────────────────────────────────── */
-
-/* Brand light: show light body (multi-path) */
+/* Brand: always LightBody (multi-path with separate gradient circle) */
 .comete-logo--brand .comete-logo__light {
   display: block;
 }
@@ -55,7 +64,7 @@
   display: none;
 }
 
-/* Neutral: always show dark body (evenodd) */
+/* Neutral: always DarkBody (evenodd compound, solid fill) */
 .comete-logo--neutral .comete-logo__light {
   display: none;
 }
@@ -64,7 +73,7 @@
   display: block;
 }
 
-/* Inverse light: show dark body (evenodd + gradient) */
+/* Inverse: always DarkBody (evenodd compound, gradient fill) */
 .comete-logo--inverse .comete-logo__light {
   display: none;
 }
@@ -73,24 +82,27 @@
   display: block;
 }
 
-/* ── Dark theme overrides ───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════
+   Dark theme token overrides
+   ──────────────────────────────────────────────────────────────────────
+   WHY these overrides exist:
+   Brand and inverse appearances are visually theme-independent — brand
+   always looks "dark on light" and inverse always looks "light on dark".
+   But the design tokens swap between themes (default ↔ inverted), so we
+   must counter-swap the token references in dark mode to keep the same
+   visual output.
+   Neutral needs no override because --logo-comete-neutral is already
+   theme-aware and produces the correct value in each theme.
+   ══════════════════════════════════════════════════════════════════════ */
 
-/* Brand dark: switch to dark body (evenodd + gradient with cutout) */
-[data-theme="dark"] .comete-logo--brand .comete-logo__light {
-  display: none;
+/* Brand dark: swap default → inverted to keep dark-blue text (#1E3661) */
+[data-theme="dark"] .comete-logo--brand {
+  --_logo-text: var(--logo-comete-inverted);
+  --_logo-icon: var(--logo-comete-inverted);
 }
 
-[data-theme="dark"] .comete-logo--brand .comete-logo__dark {
-  display: block;
-}
-
-/* Neutral dark: stays on dark body (no change needed) */
-
-/* Inverse dark: switch to light body (text exterior + gradient interior) */
-[data-theme="dark"] .comete-logo--inverse .comete-logo__light {
-  display: block;
-}
-
-[data-theme="dark"] .comete-logo--inverse .comete-logo__dark {
-  display: none;
+/* Inverse dark: swap inverted → default to keep light text (#F0F8FE) */
+[data-theme="dark"] .comete-logo--inverse {
+  --_logo-text: var(--logo-comete-default);
+  --_logo-icon: var(--logo-comete-default);
 }
