@@ -5,6 +5,10 @@ import type { LogoProps } from "../types";
 const VIEWBOX = "0 0 117 32";
 const GRAD_TRANSFORM = "translate(37.0492 10.3942) scale(160.39 45.1256)";
 
+const ICON_VIEWBOX = "24 0 36 32";
+const ICON_COMET_PATH = "M53.4217 14.9924L37.615 8.54606L44.5141 24.2014C45.6494 26.7448 48.1819 28.4112 50.9328 28.3673C54.7754 28.3235 57.7883 25.1661 57.7446 21.3071C57.7009 18.5006 55.998 16.001 53.4217 14.9924ZM51.0202 26.1747C49.1862 26.2186 47.5706 25.1223 46.8283 23.4559L42.3308 13.2383L52.6358 17.4481C54.3387 18.1497 55.4303 19.7723 55.474 21.5702C55.5177 24.0698 53.5527 26.1309 51.0202 26.1747Z";
+const ICON_CLOUD_PATH = "M25.2641 13.6555C25.0407 13.6554 24.8218 13.5936 24.6323 13.4771C24.4429 13.3605 24.2904 13.1939 24.1923 12.9963C24.0942 12.7986 24.0545 12.5778 24.0775 12.359C24.1006 12.1402 24.1855 11.9322 24.3228 11.7586C25.05 10.8315 25.9935 10.0908 27.0733 9.59901C26.9938 7.75196 27.4807 5.92413 28.4707 4.35331C29.4606 2.7825 30.9078 1.54143 32.6239 0.79158C34.3399 0.0417277 36.2454 -0.182194 38.0925 0.148948C39.9396 0.48009 41.6427 1.35096 42.9802 2.64827C43.8156 2.16563 44.7402 1.8515 45.7001 1.72418C48.9606 1.29371 52.1308 3.10816 53.408 6.02894C54.667 6.19322 55.8615 6.67461 56.8762 7.42655C57.6546 7.99275 58.3095 8.70715 58.8021 9.52735C59.2948 10.3475 59.6151 11.2568 59.744 12.2012C59.7807 12.5075 59.6937 12.8158 59.5018 13.0596C59.3099 13.3033 59.0284 13.4631 58.718 13.5044C58.4076 13.5457 58.0931 13.4653 57.8424 13.2804C57.5916 13.0956 57.4247 12.8211 57.3775 12.5162C57.2901 11.8816 57.0742 11.2707 56.7425 10.7198C56.4109 10.1689 55.9702 9.68919 55.4467 9.30916C54.6056 8.68471 53.5855 8.33816 52.5323 8.31906L51.6579 8.304L51.408 7.47892C50.7224 5.21031 48.4062 3.73307 46.0214 4.05592C45.1145 4.17362 44.2591 4.53896 43.5522 5.11059L42.6159 5.87109L41.8596 4.9384C40.9081 3.76631 39.5927 2.93369 38.1147 2.56809C36.6368 2.20249 35.0779 2.32406 33.6768 2.91419C32.2758 3.50431 31.1098 4.53045 30.3576 5.83541C29.6053 7.14037 29.3083 8.65218 29.5119 10.1393L29.6576 11.1365L28.6886 11.5017C27.7009 11.8017 26.8318 12.3957 26.2011 13.2021C26.0901 13.3428 25.9481 13.4567 25.7857 13.5353C25.6234 13.6138 25.445 13.655 25.2641 13.6555Z";
+
 function LightBody({ lightGradId }: { lightGradId: string }) {
   return (
     <>
@@ -65,17 +69,44 @@ function DarkBody({ darkGradId }: { darkGradId: string }) {
  */
 export function MyComete({
   appearance = "brand",
+  format = "logo",
   size = 32,
   className,
 }: LogoProps): ReactElement {
   const rootClass = `comete-logo--${appearance}${className ? ` ${className}` : ""}`;
 
-  const [,, vbW, vbH] = VIEWBOX.split(" ").map(Number);
-  const width = size * ((vbW ?? 1) / (vbH ?? 1));
-
   const uid = useId();
   const lightGradId = `${uid}l`;
   const darkGradId = `${uid}d`;
+
+  // --- Icon only ---
+  if (format === "icon") {
+    const [,, ivbW, ivbH] = ICON_VIEWBOX.split(" ").map(Number);
+    const iconWidth = size * ((ivbW ?? 1) / (ivbH ?? 1));
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={ICON_VIEWBOX}
+        width={iconWidth}
+        height={size}
+        fill="none"
+        aria-hidden="true"
+        className={rootClass}
+      >
+        <path d={ICON_CLOUD_PATH} style={{ fill: "var(--_logo-text)" }} />
+        <path d={ICON_COMET_PATH} fill={`url(#${darkGradId})`} />
+        <defs>
+          <radialGradient id={darkGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
+            <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
+            <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
+          </radialGradient>
+        </defs>
+      </svg>
+    );
+  }
+
+  const [,, vbW, vbH] = VIEWBOX.split(" ").map(Number);
+  const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
   return (
     <span className={rootClass} style={{ display: "inline-flex" }}>
