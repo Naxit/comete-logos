@@ -12,7 +12,7 @@
 //                      so its right edge meets x = 144 (= wordmark width)
 //
 // Formula per product:
-//   tx = 144 - COLUMN_SCALE * maxX
+//   tx = RIGHT_EDGE - COLUMN_SCALE * maxX
 //   ty = COLUMN_Y - COLUMN_SCALE * minY
 //   transform = `translate(tx, ty) scale(COLUMN_SCALE)`
 
@@ -21,6 +21,9 @@ export const COLUMN_SCALE = 0.6;
 
 /** Y position of the product-name text top in column layout. */
 const COLUMN_Y = 35;
+
+/** Right edge for product name alignment (2px margin from viewBox edge). */
+const RIGHT_EDGE = 142;
 
 /** Column viewBox — same for all products (width = wordmark, height fits two rows). */
 export const COLUMN_VIEWBOX = "0 0 144 53";
@@ -39,27 +42,27 @@ export const WORDMARK_VIEWBOX = "0 0 144 32";
 export const PRODUCT_LAYOUTS = {
   ontime: {
     rowViewBox: "0 0 286 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 284.5)}, ${r(COLUMN_Y - COLUMN_SCALE * 2)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 284.5)}, ${r(COLUMN_Y - COLUMN_SCALE * 2)}) scale(${COLUMN_SCALE})`,
   },
   link: {
     rowViewBox: "0 0 217 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 217.1)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.6)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 217.1)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.6)}) scale(${COLUMN_SCALE})`,
   },
   bi: {
     rowViewBox: "0 0 185 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 185.6)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.76)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 185.6)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.76)}) scale(${COLUMN_SCALE})`,
   },
   club: {
     rowViewBox: "0 0 236 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 234.7)}, ${r(COLUMN_Y - COLUMN_SCALE * 0)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 234.7)}, ${r(COLUMN_Y - COLUMN_SCALE * 0)}) scale(${COLUMN_SCALE})`,
   },
   mce: {
     rowViewBox: "0 0 234 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 233.7)}, ${r(COLUMN_Y - COLUMN_SCALE * 10.5)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 233.7)}, ${r(COLUMN_Y - COLUMN_SCALE * 10.5)}) scale(${COLUMN_SCALE})`,
   },
   academie: {
     rowViewBox: "0 0 350 32",
-    productNameTransform: `translate(${r(144 - COLUMN_SCALE * 348.9)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.1)}) scale(${COLUMN_SCALE})`,
+    productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 348.9)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.1)}) scale(${COLUMN_SCALE})`,
   },
 } as const;
 
