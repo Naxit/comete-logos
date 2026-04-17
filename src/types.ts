@@ -7,7 +7,7 @@ export type LogoAppearance = "brand" | "neutral" | "inverse";
 export type LogoType = "icon" | "logo";
 
 /** Layout direction for product logos. */
-export type LogoAlign = "row" | "column";
+export type LogoAlign = "default" | "inline" | "column";
 
 /** Available product names. */
 export type LogoProduct = "comete" | "ontime" | "link" | "bi" | "academie" | "club" | "mce" | "mycomete";
