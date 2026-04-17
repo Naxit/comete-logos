@@ -59,8 +59,6 @@ const TAGLINE_PATHS = [
 /** ViewBox for suffix="right": wordmark + gap + tagline (scaled to match). */
 const RIGHT_VIEWBOX = "0 0 295 32";
 
-/** ViewBox for suffix="bottom": wordmark above, tagline below. */
-const BOTTOM_VIEWBOX = "0 0 144 42";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -230,25 +228,13 @@ export function Comete({
   const ts = fallback ? fallbackTextStyle(fbResolved) : tokenTextStyle();
   const subtleStyle: CSSProperties = { fill: "var(--_logo-subtle)" };
 
-  const viewBox =
-    suffix === "right" ? RIGHT_VIEWBOX
-    : suffix === "bottom" ? BOTTOM_VIEWBOX
-    : data.viewBox;
+  const viewBox = suffix === "right" ? RIGHT_VIEWBOX : data.viewBox;
 
   const [, , vbW, vbH] = viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
-  // Tagline positioning:
-  //   right:  translate to the right of the wordmark (x=154), vertically centered
-  //   bottom: translate below the wordmark (y=35), nearly justified (141 ≈ 144)
-  const taglinePaths = suffix !== "none" ? (
-    <g
-      transform={
-        suffix === "right"
-          ? `translate(154, 18)`
-          : `translate(1.5, 35)`
-      }
-    >
+  const taglinePaths = suffix === "right" ? (
+    <g transform="translate(154, 18)">
       {TAGLINE_PATHS.map((d, i) => (
         <path key={i} d={d} style={fallback ? { fill: "#6F8488" } : subtleStyle} />
       ))}
