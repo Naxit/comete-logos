@@ -99,7 +99,7 @@ function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign 
  */
 export function Club({
   appearance = "brand",
-  align = "row",
+  align = "default",
   size = 32,
   className,
 }: LogoProps): ReactElement {
