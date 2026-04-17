@@ -56,8 +56,8 @@ const TAGLINE_PATHS = [
   "M140.82 4.7835C140.404 5.11569 139.943 5.28179 139.436 5.28179C139.085 5.28179 138.771 5.20275 138.493 5.04467C138.217 4.88431 138 4.66667 137.841 4.39175C137.683 4.11684 137.604 3.80527 137.604 3.45704C137.604 3.12027 137.677 2.82016 137.825 2.5567C137.974 2.29324 138.177 2.08591 138.435 1.93471C138.693 1.78351 138.986 1.7079 139.314 1.7079C139.646 1.7079 139.939 1.78809 140.193 1.94845C140.446 2.10653 140.644 2.32646 140.786 2.60825C140.929 2.88774 141 3.21191 141 3.58076V3.68729H138.055C138.082 3.92783 138.16 4.1386 138.289 4.31959C138.418 4.50057 138.584 4.64147 138.788 4.74227C138.994 4.84307 139.223 4.89347 139.477 4.89347C139.893 4.89347 140.275 4.75372 140.623 4.47423L140.82 4.7835ZM138.042 3.32302H140.61C140.589 3.07789 140.523 2.86369 140.41 2.68041C140.297 2.49714 140.147 2.35395 139.962 2.25086C139.779 2.14777 139.569 2.09622 139.334 2.09622C139.097 2.09622 138.883 2.14777 138.693 2.25086C138.505 2.35395 138.354 2.49828 138.238 2.68385C138.125 2.86712 138.06 3.08018 138.042 3.32302Z",
 ] as const;
 
-/** ViewBox for suffix="right": wordmark + gap + tagline (scaled to match). */
-const RIGHT_VIEWBOX = "0 0 295 32";
+/** ViewBox for suffix="bottom": wordmark above, tagline below. */
+const BOTTOM_VIEWBOX = "0 0 144 42";
 
 
 // ---------------------------------------------------------------------------
@@ -228,13 +228,13 @@ export function Comete({
   const ts = fallback ? fallbackTextStyle(fbResolved) : tokenTextStyle();
   const subtleStyle: CSSProperties = { fill: "var(--_logo-subtle)" };
 
-  const viewBox = suffix === "right" ? RIGHT_VIEWBOX : data.viewBox;
+  const viewBox = suffix === "bottom" ? BOTTOM_VIEWBOX : data.viewBox;
 
   const [, , vbW, vbH] = viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
-  const taglinePaths = suffix === "right" ? (
-    <g transform="translate(154, 18)">
+  const taglinePaths = suffix === "bottom" ? (
+    <g transform="translate(1.5, 35)">
       {TAGLINE_PATHS.map((d, i) => (
         <path key={i} d={d} style={fallback ? { fill: "#6F8488" } : subtleStyle} />
       ))}
