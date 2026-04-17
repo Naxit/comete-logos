@@ -1,8 +1,8 @@
 import { useId } from "react";
 import type { ReactElement } from "react";
-import type { LogoAlign, LogoProps } from "../types";
+import type { LogoSuffix, LogoProps } from "../types";
 import { LETTER_C, LETTER_M, LETTER_E_ACCENT, LETTER_T, LETTER_E } from "../wordmark-paths";
-import { COLUMN_VIEWBOX, PRODUCT_LAYOUTS } from "../layout-data";
+import { COLUMN_VIEWBOX, WORDMARK_VIEWBOX, PRODUCT_LAYOUTS } from "../layout-data";
 
 // ---------------------------------------------------------------------------
 // Viewbox — both variants share the same dimensions.
@@ -38,7 +38,7 @@ const GRAD_TRANSFORM = "translate(26.8825 10.3942) scale(44.2455 45.1256)";
 // Visible in: brand appearance (all themes) — see logos.css switching rules.
 // ═══════════════════════════════════════════════════════════════════════════
 
-function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAlign }) {
+function LightBody({ lightGradId, suffix }: { lightGradId: string; suffix: LogoSuffix }) {
   const productPaths = (
     <>
       <path d="M156.2 21.1596C156.219 18.1849 157.225 15.6798 159.198 13.6445C161.114 11.5896 163.628 10.5328 166.762 10.4741C169.916 10.5328 172.45 11.5896 174.384 13.6445C176.338 15.6798 177.325 18.1849 177.344 21.1791C177.325 24.1539 176.357 26.6393 174.462 28.6551C172.604 30.71 170.032 31.7668 166.782 31.8255C163.551 31.7668 161.017 30.71 159.16 28.6551C157.187 26.6197 156.219 24.1147 156.2 21.1596ZM166.762 13.7424C164.847 13.7619 163.222 14.4665 161.887 15.8168C160.514 17.2063 159.817 18.9872 159.779 21.1596C159.817 23.1558 160.514 24.878 161.887 26.287C163.222 27.7548 164.847 28.4985 166.762 28.5181C168.716 28.4985 170.36 27.7548 171.695 26.287C173.03 24.878 173.726 23.1558 173.746 21.1596C173.726 18.9872 173.03 17.2063 171.695 15.8168C170.36 14.4665 168.716 13.7619 166.762 13.7424Z" style={{ fill: "var(--_logo-subtle)" }} />
@@ -66,7 +66,7 @@ function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAli
       <path fillRule="evenodd" clipRule="evenodd" d="M37.7996 30.2252C36.4968 30.2252 35.2785 29.9785 34.1446 29.4851C33.0108 28.9919 32.0198 28.3211 31.1717 27.4728C30.3233 26.6247 29.6526 25.6337 29.1593 24.4998C28.6659 23.366 28.4192 22.1477 28.4192 20.8449C28.4192 19.542 28.6659 18.3237 29.1593 17.1899C29.6526 16.056 30.3233 15.065 31.1717 14.2169C32.0198 13.3686 33.0108 12.6978 34.1446 12.2046C35.2785 11.7112 36.4927 11.4645 37.7873 11.4645C39.0338 11.4645 40.2621 11.7212 41.4093 12.2046C42.8627 12.817 44.1066 13.7254 45.1141 14.9542C45.8031 15.7945 46.2727 16.7113 46.6356 17.7128C46.9985 18.7143 47.18 19.7596 47.18 20.8488C47.18 22.149 46.9333 23.366 46.4399 24.4998C45.9467 25.6337 45.2759 26.6247 44.4276 27.4728C43.5794 28.3211 42.5884 28.9919 41.4546 29.4851C40.3208 29.9785 39.1024 30.2252 37.7996 30.2252ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${lightGradId})`} />
 
       {/* ── "on time" product name ── */}
-      {align === "column" ? (
+      {suffix === "none" ? null : suffix === "bottom" ? (
         <g transform={PRODUCT_LAYOUTS.ontime.productNameTransform}>{productPaths}</g>
       ) : (
         productPaths
@@ -107,7 +107,7 @@ function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAli
 // Visible in: neutral and inverse appearances (all themes) — see logos.css.
 // ═══════════════════════════════════════════════════════════════════════════
 
-function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign }) {
+function DarkBody({ darkGradId, suffix }: { darkGradId: string; suffix: LogoSuffix }) {
   const productPaths = (
     <>
       <path d="M156.2 21.1596C156.219 18.1849 157.231 15.7598 159.216 13.7125C161.142 11.6456 163.672 10.5826 166.824 10.5236C169.996 10.5826 172.545 11.6456 174.491 13.7125C176.456 15.7598 177.448 18.2795 177.468 21.2913C177.448 24.2834 176.475 26.7834 174.568 28.811C172.7 30.8779 170.112 31.9409 166.844 31.9999C163.594 31.9409 161.045 30.8779 159.177 28.811C157.192 26.7637 156.219 24.244 156.2 21.2716ZM166.824 13.811C164.898 13.8306 163.263 14.5393 161.921 15.8976C160.539 17.2952 159.839 19.0866 159.8 21.2716C159.839 23.2795 160.539 25.0117 161.921 26.4291C163.263 27.9054 164.898 28.6535 166.824 28.6732C168.789 28.6535 170.443 27.9054 171.786 26.4291C173.128 25.0117 173.829 23.2795 173.848 21.2716C173.829 19.0866 173.128 17.2952 171.786 15.8976C170.443 14.5393 168.789 13.8306 166.824 13.811Z" style={{ fill: "var(--_logo-subtle)" }} />
@@ -132,7 +132,7 @@ function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign 
       <path fillRule="evenodd" clipRule="evenodd" d="M16.8 0L27.7324 25.3026C29.493 29.3793 33.4442 32 37.7947 32H37.9687C44.0388 31.9064 48.8908 26.8001 48.7987 20.6123C48.727 16.1092 46.0247 12.0741 41.9301 10.3893L16.8 0ZM34.1446 29.4851C35.2785 29.9785 36.4968 30.2252 37.7996 30.2252C39.1024 30.2252 40.3208 29.9785 41.4546 29.4851C42.5884 28.9919 43.5794 28.3211 44.4276 27.4728C45.2759 26.6247 45.9467 25.6337 46.4399 24.4998C46.9333 23.366 47.18 22.149 47.18 20.8488C47.18 19.7596 46.9985 18.7143 46.6356 17.7128C46.2727 16.7113 45.8031 15.7945 45.1141 14.9542C44.1066 13.7254 42.8627 12.817 41.4093 12.2046C40.2621 11.7212 39.0338 11.4645 37.7873 11.4645C36.4927 11.4645 35.2785 11.7112 34.1446 12.2046C33.0108 12.6978 32.0198 13.3686 31.1717 14.2169C30.3233 15.065 29.6526 16.056 29.1593 17.1899C28.6659 18.3237 28.4192 19.542 28.4192 20.8449C28.4192 22.1477 28.6659 23.366 29.1593 24.4998C29.6526 25.6337 30.3233 26.6247 31.1717 27.4728C32.0198 28.3211 33.0108 28.9919 34.1446 29.4851ZM39.8107 24.195L41.1045 22.9011L38.6092 20.4059V16.1547H36.7609V21.1452L39.8107 24.195Z" fill={`url(#${darkGradId})`} />
 
       {/* ── "on time" product name ── */}
-      {align === "column" ? (
+      {suffix === "none" ? null : suffix === "bottom" ? (
         <g transform={PRODUCT_LAYOUTS.ontime.productNameTransform}>{productPaths}</g>
       ) : (
         productPaths
@@ -185,13 +185,13 @@ function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign 
  */
 export function OnTime({
   appearance = "brand",
-  align = "default",
+  suffix = "right",
   size = 32,
   className,
 }: LogoProps): ReactElement {
   const rootClass = `comete-logo--${appearance}${className ? ` ${className}` : ""}`;
 
-  const viewBox = align === "column" ? COLUMN_VIEWBOX : VIEWBOX;
+  const viewBox = suffix === "bottom" ? COLUMN_VIEWBOX : suffix === "none" ? WORDMARK_VIEWBOX : VIEWBOX;
   const [,, vbW, vbH] = viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
@@ -210,7 +210,7 @@ export function OnTime({
         aria-hidden="true"
         className="comete-logo__light"
       >
-        <LightBody lightGradId={lightGradId} align={align} />
+        <LightBody lightGradId={lightGradId} suffix={suffix} />
       </svg>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +221,7 @@ export function OnTime({
         aria-hidden="true"
         className="comete-logo__dark"
       >
-        <DarkBody darkGradId={darkGradId} align={align} />
+        <DarkBody darkGradId={darkGradId} suffix={suffix} />
       </svg>
     </span>
   );

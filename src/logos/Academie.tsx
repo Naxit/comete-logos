@@ -1,14 +1,14 @@
 import { useId } from "react";
 import type { ReactElement } from "react";
-import type { LogoAlign, LogoProps } from "../types";
+import type { LogoSuffix, LogoProps } from "../types";
 import { LETTER_C, LETTER_M, LETTER_E_ACCENT, LETTER_T, LETTER_E } from "../wordmark-paths";
-import { COLUMN_VIEWBOX, PRODUCT_LAYOUTS } from "../layout-data";
+import { COLUMN_VIEWBOX, WORDMARK_VIEWBOX, PRODUCT_LAYOUTS } from "../layout-data";
 
 const GRAD_TRANSFORM = "translate(26.8825 10.3942) scale(44.2454 45.1256)";
 
 const VIEWBOX = "0 0 350 32";
 
-function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAlign }) {
+function LightBody({ lightGradId, suffix }: { lightGradId: string; suffix: LogoSuffix }) {
   const productPaths = (
     <>
       <path d="M156.2 21.2461C156.2 19.1331 156.631 17.2842 157.493 15.6994C158.355 14.0895 159.534 12.8443 161.03 11.9639C162.551 11.0834 164.238 10.6432 166.088 10.6432C167.914 10.6432 169.499 11.0331 170.843 11.8129C172.186 12.5927 173.188 13.5738 173.847 14.7561V10.9828H177.346V31.6604H173.847V27.8116C173.163 29.0191 172.136 30.0253 170.766 30.8303C169.423 31.6101 167.851 32 166.05 32C164.2 32 162.526 31.5472 161.03 30.6416C159.534 29.736 158.355 28.4657 157.493 26.8306C156.631 25.1955 156.2 23.334 156.2 21.2461ZM173.847 21.2839C173.847 19.7242 173.53 18.3659 172.896 17.2087C172.262 16.0516 171.4 15.1711 170.31 14.5674C169.245 13.9385 168.066 13.6241 166.773 13.6241C165.48 13.6241 164.301 13.926 163.236 14.5297C162.171 15.1334 161.322 16.0138 160.688 17.171C160.054 18.3281 159.737 19.6865 159.737 21.2461C159.737 22.8309 160.054 24.2144 160.688 25.3967C161.322 26.5539 162.171 27.4469 163.236 28.0758C164.301 28.6795 165.48 28.9814 166.773 28.9814C168.066 28.9814 169.245 28.6795 170.31 28.0758C171.4 27.4469 172.262 26.5539 172.896 25.3967C173.53 24.2144 173.847 22.8435 173.847 21.2839Z" style={{ fill: "var(--_logo-subtle)" }} />
@@ -36,7 +36,7 @@ function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAli
       <path d="M45.411 21.745C45.411 22.1479 45.0877 22.4745 44.6888 22.4745C44.2899 22.4745 43.9666 22.1479 43.9666 21.745C43.9666 21.3422 44.2899 21.0155 44.6888 21.0155C45.0877 21.0155 45.411 21.3422 45.411 21.745Z" fill={`url(#${lightGradId})`} />
 
       {/* ── Product text ── */}
-      {align === "column" ? (
+      {suffix === "none" ? null : suffix === "bottom" ? (
         <g transform={PRODUCT_LAYOUTS.academie.productNameTransform}>{productPaths}</g>
       ) : (
         productPaths
@@ -51,7 +51,7 @@ function LightBody({ lightGradId, align }: { lightGradId: string; align: LogoAli
   );
 }
 
-function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign }) {
+function DarkBody({ darkGradId, suffix }: { darkGradId: string; suffix: LogoSuffix }) {
   const productPaths = (
     <>
       <path d="M156.533 21.2463C156.533 19.1332 156.964 17.2843 157.826 15.6995C158.688 14.0896 159.867 12.8444 161.363 11.964C162.884 11.0835 164.571 10.6433 166.421 10.6433C168.247 10.6433 169.832 11.0332 171.176 11.813C172.519 12.5929 173.521 13.5739 174.18 14.7562V10.9829H177.679V31.6605H174.18V27.8118C173.496 29.0192 172.469 30.0254 171.099 30.8304C169.756 31.6102 168.184 32.0001 166.383 32.0001C164.533 32.0001 162.859 31.5473 161.363 30.6417C159.867 29.7361 158.688 28.4658 157.826 26.8307C156.964 25.1956 156.533 23.3341 156.533 21.2463ZM174.18 21.284C174.18 19.7244 173.863 18.366 173.229 17.2088C172.595 16.0517 171.733 15.1713 170.643 14.5675C169.578 13.9387 168.399 13.6242 167.106 13.6242C165.813 13.6242 164.634 13.9261 163.569 14.5298C162.504 15.1335 161.655 16.014 161.021 17.1711C160.387 18.3282 160.07 19.6866 160.07 21.2463C160.07 22.831 160.387 24.2146 161.021 25.3969C161.655 26.554 162.504 27.447 163.569 28.0759C164.634 28.6796 165.813 28.9815 167.106 28.9815C168.399 28.9815 169.578 28.6796 170.643 28.0759C171.733 27.447 172.595 26.554 173.229 25.3969C173.863 24.2146 174.18 22.8436 174.18 21.284Z" style={{ fill: "var(--_logo-subtle)" }} />
@@ -76,7 +76,7 @@ function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign 
       <path fillRule="evenodd" clipRule="evenodd" d="M16.3 0L27.2323 25.3026C28.993 29.3793 32.9442 32 37.2946 32H37.4686C43.5387 31.9064 48.3907 26.8001 48.2986 20.6123C48.227 16.1092 45.5246 12.0741 41.4301 10.3893L16.3 0ZM45.3466 18.0195L37.4224 13.9476C37.1328 13.8128 36.8181 13.8128 36.5285 13.9476L28.6037 18.0195C28.2017 18.2634 28.1957 18.7052 28.6037 18.9322L36.528 23.0041C36.8176 23.1389 37.1323 23.1389 37.4219 23.0041L43.9036 19.6738V20.8157C44.1038 20.7531 44.3387 20.7612 44.533 20.8364V19.3509L45.3456 18.9333C45.7276 18.7185 45.7306 18.2265 45.3456 18.0205L45.3466 18.0195ZM36.5285 23.8624C36.8181 23.9972 37.1328 23.9972 37.4224 23.8624L42.6448 21.1794V24.607C42.6448 26.0282 40.1066 27.1798 36.9757 27.1798C33.8447 27.1798 31.3065 26.0277 31.3065 24.607V21.1794L36.5285 23.8624ZM43.5849 22.5459L43.4666 24.6979C43.4666 24.8143 43.5589 24.908 43.6724 24.908H44.7052C44.8192 24.908 44.911 24.8137 44.911 24.6979L44.8442 22.5459C44.8442 22.5205 44.8401 22.4946 44.8324 22.4686C44.4867 22.7825 43.9512 22.7983 43.5883 22.5054C43.5861 22.519 43.5849 22.5325 43.5849 22.5459ZM44.1888 22.4745C44.5877 22.4745 44.911 22.1479 44.911 21.745C44.911 21.3422 44.5877 21.0155 44.1888 21.0155C43.7899 21.0155 43.4666 21.3422 43.4666 21.745C43.4666 22.1479 43.7899 22.4745 44.1888 22.4745Z" fill={`url(#${darkGradId})`} />
 
       {/* ── Product text ── */}
-      {align === "column" ? (
+      {suffix === "none" ? null : suffix === "bottom" ? (
         <g transform={PRODUCT_LAYOUTS.academie.productNameTransform}>{productPaths}</g>
       ) : (
         productPaths
@@ -102,13 +102,13 @@ function DarkBody({ darkGradId, align }: { darkGradId: string; align: LogoAlign 
  */
 export function Academie({
   appearance = "brand",
-  align = "default",
+  suffix = "right",
   size = 32,
   className,
 }: LogoProps): ReactElement {
   const rootClass = `comete-logo--${appearance}${className ? ` ${className}` : ""}`;
 
-  const viewBox = align === "column" ? COLUMN_VIEWBOX : VIEWBOX;
+  const viewBox = suffix === "bottom" ? COLUMN_VIEWBOX : suffix === "none" ? WORDMARK_VIEWBOX : VIEWBOX;
   const [,, vbW, vbH] = viewBox.split(" ").map(Number);
   const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
@@ -127,7 +127,7 @@ export function Academie({
         aria-hidden="true"
         className="comete-logo__light"
       >
-        <LightBody lightGradId={lightGradId} align={align} />
+        <LightBody lightGradId={lightGradId} suffix={suffix} />
       </svg>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@ export function Academie({
         aria-hidden="true"
         className="comete-logo__dark"
       >
-        <DarkBody darkGradId={darkGradId} align={align} />
+        <DarkBody darkGradId={darkGradId} suffix={suffix} />
       </svg>
     </span>
   );
