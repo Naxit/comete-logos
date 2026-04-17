@@ -25,6 +25,9 @@ const COLUMN_Y = 35;
 /** Column viewBox — same for all products (width = wordmark, height fits two rows). */
 export const COLUMN_VIEWBOX = "0 0 144 53";
 
+/** Wordmark-only viewBox — used when suffix="none" (hide product name, show only wordmark). */
+export const WORDMARK_VIEWBOX = "0 0 144 32";
+
 /**
  * Per-product column layout configuration.
  *
