@@ -26,7 +26,7 @@ const COLUMN_Y = 35;
 const RIGHT_EDGE = 142;
 
 /** Column viewBox — same for all products (width = wordmark, height fits two rows). */
-export const COLUMN_VIEWBOX = "0 0 144 53";
+export const COLUMN_VIEWBOX = "0 0 144 56";
 
 /** Wordmark-only viewBox — used when suffix="none" (hide product name, show only wordmark). */
 export const WORDMARK_VIEWBOX = "0 0 144 32";
