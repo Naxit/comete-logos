@@ -6,6 +6,9 @@ export type LogoAppearance = "brand" | "neutral" | "inverse";
 /** Display type: icon only or full logo (icon + wordmark). */
 export type LogoType = "icon" | "logo";
 
+/** Layout direction for product logos. */
+export type LogoAlign = "row" | "column";
+
 /** Available product names. */
 export type LogoProduct = "comete" | "ontime" | "link" | "bi" | "academie" | "club" | "mce" | "mycomete";
 
@@ -34,6 +37,8 @@ export interface LogoProps extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
   appearance?: LogoAppearance;
   /** Display type: icon only or full logo. @default "logo" */
   type?: LogoType;
+  /** Layout direction for product logos. @default "row" */
+  align?: LogoAlign;
   /** Rendered height in pixels. Width scales proportionally. @default 32 */
   size?: number;
   /**

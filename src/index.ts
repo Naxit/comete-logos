@@ -14,6 +14,7 @@ export { logoRegistry } from "./registry";
 
 // Types
 export type {
+  LogoAlign,
   LogoAppearance,
   LogoColors,
   LogoProduct,
