@@ -17,6 +17,7 @@ export type {
   LogoSuffix,
   LogoAppearance,
   LogoColors,
+  LogoFormat,
   LogoProduct,
   LogoProps,
   LogoRegistry,
