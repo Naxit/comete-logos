@@ -104,26 +104,27 @@ export function Link({
 
   // --- Icon only ---
   if (format === "icon") {
-    const iconViewBox = "15 -0.5 34 33";
+    // Square viewBox aligned on the path bounds (path starts at x=16, y=0
+    // and spans 32×32 units). Matches the Comete icon pattern.
+    const iconViewBox = "16 0 32 32";
     return (
-      <span className={rootClass} style={{ display: "inline-flex" }}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox={iconViewBox}
-          width={size}
-          height={size}
-          fill="none"
-          aria-hidden="true"
-        >
-          <path fillRule="evenodd" clipRule="evenodd" d="M26.9324 25.3026L16 0L41.1301 10.3893C45.2246 12.0741 47.927 16.1092 47.9986 20.6123C48.0908 26.8001 43.2388 31.9064 37.1686 32H36.9946C32.6442 32 28.693 29.3793 26.9324 25.3026ZM41.7368 17.2203C41.7368 19.5508 39.8588 21.4406 37.5428 21.4406C35.2268 21.4406 33.3488 19.5508 33.3488 17.2203C33.3488 14.8898 35.2268 13 37.5428 13C39.8588 13 41.7368 14.8898 41.7368 17.2203ZM44.8089 25.6558C43.0239 28.0578 40.1949 29.9497 36.9999 30C36.9489 30.001 36.8979 30.001 36.8459 30.001C34.249 30.001 31.815 28.6605 30 26.9197C30.113 24.8105 31.854 23.129 33.978 23.129H41.1079C42.7849 23.129 44.2219 24.1776 44.8089 25.6558Z" fill={`url(#${darkGradId})`} />
-          <defs>
-            <radialGradient id={darkGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
-              <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
-              <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
-            </radialGradient>
-          </defs>
-        </svg>
-      </span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={iconViewBox}
+        width={size}
+        height={size}
+        fill="none"
+        aria-hidden="true"
+        className={rootClass}
+      >
+        <path fillRule="evenodd" clipRule="evenodd" d="M26.9324 25.3026L16 0L41.1301 10.3893C45.2246 12.0741 47.927 16.1092 47.9986 20.6123C48.0908 26.8001 43.2388 31.9064 37.1686 32H36.9946C32.6442 32 28.693 29.3793 26.9324 25.3026ZM41.7368 17.2203C41.7368 19.5508 39.8588 21.4406 37.5428 21.4406C35.2268 21.4406 33.3488 19.5508 33.3488 17.2203C33.3488 14.8898 35.2268 13 37.5428 13C39.8588 13 41.7368 14.8898 41.7368 17.2203ZM44.8089 25.6558C43.0239 28.0578 40.1949 29.9497 36.9999 30C36.9489 30.001 36.8979 30.001 36.8459 30.001C34.249 30.001 31.815 28.6605 30 26.9197C30.113 24.8105 31.854 23.129 33.978 23.129H41.1079C42.7849 23.129 44.2219 24.1776 44.8089 25.6558Z" fill={`url(#${darkGradId})`} />
+        <defs>
+          <radialGradient id={darkGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
+            <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
+            <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
+          </radialGradient>
+        </defs>
+      </svg>
     );
   }
 
