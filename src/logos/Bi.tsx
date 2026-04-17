@@ -87,19 +87,45 @@ function DarkBody({ darkGradId, suffix }: { darkGradId: string; suffix: LogoSuff
  */
 export function Bi({
   appearance = "brand",
+  format = "logo",
   suffix = "right",
   size = 32,
   className,
 }: LogoProps): ReactElement {
   const rootClass = `comete-logo--${appearance}${className ? ` ${className}` : ""}`;
 
-  const viewBox = suffix === "bottom" ? COLUMN_VIEWBOX : suffix === "none" ? WORDMARK_VIEWBOX : VIEWBOX;
-  const [,, vbW, vbH] = viewBox.split(" ").map(Number);
-  const width = size * ((vbW ?? 1) / (vbH ?? 1));
-
   const uid = useId();
   const lightGradId = `${uid}l`;
   const darkGradId = `${uid}d`;
+
+  // --- Icon only ---
+  if (format === "icon") {
+    const iconViewBox = "15 -0.5 34 33";
+    return (
+      <span className={rootClass} style={{ display: "inline-flex" }}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox={iconViewBox}
+          width={size}
+          height={size}
+          fill="none"
+          aria-hidden="true"
+        >
+          <path fillRule="evenodd" clipRule="evenodd" d="M16 0L26.9323 25.3025C28.6929 29.3792 32.6441 31.9999 36.9945 31.9999H37.1686C43.2387 31.9063 48.0906 26.8 47.9985 20.6122C47.9268 16.1091 45.2245 12.0741 41.13 10.3893L16 0ZM39.3218 16.7991C39.3393 16.8324 39.3538 16.8672 39.3651 16.903C39.3755 16.9397 39.3819 16.9775 39.3843 17.0156C39.3853 17.0351 39.3853 17.0547 39.3843 17.0743V29.6314C39.3853 29.6497 39.3853 29.668 39.3843 29.6863C38.6301 29.8834 37.8549 29.9887 37.0755 29.9999H36.9235C36.4268 29.9993 35.9309 29.9607 35.4401 29.8844C35.4311 29.866 35.423 29.847 35.416 29.8277L35.4114 29.8166C35.4056 29.8027 35.3996 29.7884 35.3996 29.7748V29.7632C35.3958 29.7468 35.3929 29.73 35.391 29.7132C35.3908 29.7109 35.3906 29.7086 35.3906 29.7062C35.3906 29.7037 35.3907 29.7013 35.391 29.6988C35.3895 29.6773 35.3895 29.6558 35.391 29.6343V17.0762C35.39 17.0566 35.39 17.0371 35.391 17.0175C35.3946 16.9793 35.4023 16.9415 35.4141 16.905C35.4249 16.8689 35.4394 16.8341 35.4574 16.8011C35.507 16.7099 35.5803 16.6339 35.6695 16.5809C35.7587 16.5279 35.8606 16.4999 35.9643 16.4999H38.8148C38.9294 16.4993 39.0416 16.5328 39.1371 16.5961C39.2136 16.6485 39.2769 16.718 39.3218 16.7991ZM45.0312 19.5418V25.6583C44.0362 27.1481 42.6526 28.3375 41.0302 29.0975V19.5418C41.0298 19.4276 41.0633 19.3157 41.1264 19.2205C41.1472 19.1899 41.1707 19.1612 41.1967 19.1349C41.263 19.0689 41.3441 19.0197 41.4333 18.9915C41.47 18.9806 41.5077 18.9732 41.5459 18.9694C41.5654 18.9684 41.585 18.9684 41.6046 18.9694H44.4569C44.4765 18.9684 44.4961 18.9684 44.5156 18.9694C44.5537 18.9732 44.5914 18.9806 44.6282 18.9915C44.7174 19.0197 44.7985 19.0689 44.8648 19.1349C44.8908 19.1612 44.9143 19.1899 44.935 19.2205C44.9982 19.3157 45.0317 19.4276 45.0312 19.5418ZM29.7499 26.833C30.844 28.0294 32.2186 28.9346 33.7499 29.467V22.3164C33.746 22.2783 33.7386 22.2406 33.7278 22.2038C33.6878 22.0791 33.6072 21.9714 33.4989 21.8979C33.4039 21.8341 33.2919 21.8006 33.1776 21.8017H30.3233C30.2086 21.8007 30.0963 21.8342 30.001 21.8979C29.9244 21.9498 29.8613 22.0195 29.8172 22.1009C29.7992 22.1337 29.7844 22.1682 29.773 22.2038C29.7624 22.2407 29.7546 22.2783 29.7499 22.3164V26.833Z" fill={`url(#${darkGradId})`} />
+          <defs>
+            <radialGradient id={darkGradId} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform={GRAD_TRANSFORM}>
+              <stop style={{ stopColor: "var(--_logo-gradient-light)" }} />
+              <stop offset="0.7358" style={{ stopColor: "var(--_logo-gradient-dark)" }} />
+            </radialGradient>
+          </defs>
+        </svg>
+      </span>
+    );
+  }
+
+  const viewBox = suffix === "bottom" ? COLUMN_VIEWBOX : suffix === "none" ? WORDMARK_VIEWBOX : VIEWBOX;
+  const [,, vbW, vbH] = viewBox.split(" ").map(Number);
+  const width = size * ((vbW ?? 1) / (vbH ?? 1));
 
   return (
     <span className={rootClass} style={{ display: "inline-flex" }}>
