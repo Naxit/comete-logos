@@ -171,7 +171,7 @@ function CometeGradient({
  */
 export function Comete({
   appearance = "brand",
-  type = "logo",
+  format = "logo",
   suffix = "none",
   size = 32,
   colors: colorOverrides,
@@ -189,7 +189,7 @@ export function Comete({
   const fbResolved = fb ?? getFallback(appearance);
 
   // --- Icon only -----------------------------------------------------------
-  if (type === "icon") {
+  if (format === "icon") {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
