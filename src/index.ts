@@ -12,14 +12,28 @@ export { Mce } from "./logos/Mce";
 export { MyComete } from "./logos/MyComete";
 export { logoRegistry } from "./registry";
 
+// Composable logo parts
+export { ProductIcon } from "./components/ProductIcon";
+export type { ProductIconProps } from "./components/ProductIcon";
+export { ProductRootName } from "./components/ProductRootName";
+export type { ProductRootNameProps } from "./components/ProductRootName";
+export {
+	ProductSuffix,
+	getProductSuffixMetrics,
+} from "./components/ProductSuffix";
+export type {
+	ProductSuffixProps,
+	ProductSuffixProduct,
+} from "./components/ProductSuffix";
+
 // Types
 export type {
-  LogoSuffix,
-  LogoAppearance,
-  LogoColors,
-  LogoFormat,
-  LogoProduct,
-  LogoProps,
-  LogoRegistry,
-  LogoType,
+	LogoSuffix,
+	LogoAppearance,
+	LogoColors,
+	LogoFormat,
+	LogoProduct,
+	LogoProps,
+	LogoRegistry,
+	LogoType,
 } from "./types";

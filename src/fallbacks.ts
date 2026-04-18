@@ -9,24 +9,24 @@ import type { LogoAppearance, LogoColors } from "./types";
 // ---------------------------------------------------------------------------
 
 export const FALLBACK_COLORS: Record<LogoAppearance, LogoColors> = {
-  brand: {
-    text: "#1E3661",
-    icon: "#1E3661",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
-  neutral: {
-    text: "#224986",
-    icon: "#224986",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
-  inverse: {
-    text: "#F0F8FE",
-    icon: "#F0F8FE",
-    gradientLight: "#FFF146",
-    gradientDark: "#F8BF01",
-  },
+	brand: {
+		text: "#1E3661",
+		icon: "#1E3661",
+		gradientLight: "#FFF146",
+		gradientDark: "#F8BF01",
+	},
+	neutral: {
+		text: "#224986",
+		icon: "#224986",
+		gradientLight: "#FFF146",
+		gradientDark: "#F8BF01",
+	},
+	inverse: {
+		text: "#F0F8FE",
+		icon: "#F0F8FE",
+		gradientLight: "#FFF146",
+		gradientDark: "#F8BF01",
+	},
 };
 
 /**
@@ -37,11 +37,11 @@ export const FALLBACK_COLORS: Record<LogoAppearance, LogoColors> = {
  * the component knows to rely on CSS custom properties from design tokens.
  */
 export function resolveFallback(
-  _appearance: LogoAppearance,
-  overrides?: LogoColors,
+	_appearance: LogoAppearance,
+	overrides?: LogoColors,
 ): LogoColors | undefined {
-  if (overrides) return overrides;
-  return undefined;
+	if (overrides) return overrides;
+	return undefined;
 }
 
 /**
@@ -49,5 +49,5 @@ export function resolveFallback(
  * Used only in fallback mode (no CSS tokens available).
  */
 export function getFallback(appearance: LogoAppearance): LogoColors {
-  return FALLBACK_COLORS[appearance] ?? FALLBACK_COLORS.brand;
+	return FALLBACK_COLORS[appearance] ?? FALLBACK_COLORS.brand;
 }
