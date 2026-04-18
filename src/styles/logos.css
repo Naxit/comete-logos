@@ -3,20 +3,20 @@
 
 /* ── Brand (default) ────────────────────────────────────────────────── */
 .comete-logo--brand {
-  --_logo-text: var(--logo-comete-default);
-  --_logo-icon: var(--logo-comete-default);
-  --_logo-subtle: var(--logo-comete-subtle);
-  --_logo-gradient-light: var(--logo-comete-gradient-light);
-  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+	--_logo-text: var(--logo-comete-default);
+	--_logo-icon: var(--logo-comete-default);
+	--_logo-subtle: var(--logo-comete-subtle);
+	--_logo-gradient-light: var(--logo-comete-gradient-light);
+	--_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
 
 /* ── Neutral ────────────────────────────────────────────────────────── */
 .comete-logo--neutral {
-  --_logo-text: var(--logo-comete-neutral);
-  --_logo-icon: var(--logo-comete-neutral);
-  --_logo-subtle: var(--logo-comete-neutral);
-  --_logo-gradient-light: var(--logo-comete-neutral);
-  --_logo-gradient-dark: var(--logo-comete-neutral);
+	--_logo-text: var(--logo-comete-neutral);
+	--_logo-icon: var(--logo-comete-neutral);
+	--_logo-subtle: var(--logo-comete-neutral);
+	--_logo-gradient-light: var(--logo-comete-neutral);
+	--_logo-gradient-dark: var(--logo-comete-neutral);
 }
 
 /* ── Inverse ────────────────────────────────────────────────────────── */
@@ -27,11 +27,11 @@
  * the full inverted text colour.
  */
 .comete-logo--inverse {
-  --_logo-text: var(--logo-comete-inverted);
-  --_logo-icon: var(--logo-comete-inverted);
-  --_logo-subtle: var(--logo-comete-subtle);
-  --_logo-gradient-light: var(--logo-comete-gradient-light);
-  --_logo-gradient-dark: var(--logo-comete-gradient-dark);
+	--_logo-text: var(--logo-comete-inverted);
+	--_logo-icon: var(--logo-comete-inverted);
+	--_logo-subtle: var(--logo-comete-subtle);
+	--_logo-gradient-light: var(--logo-comete-gradient-light);
+	--_logo-gradient-dark: var(--logo-comete-gradient-dark);
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -57,38 +57,38 @@
 
 /* Brand light: LightBody (multi-path with separate gradient circle) */
 .comete-logo--brand .comete-logo__light {
-  display: block;
+	display: block;
 }
 
 .comete-logo--brand .comete-logo__dark {
-  display: none;
+	display: none;
 }
 
 /* Brand dark: DarkBody (full gradient comet with evenodd cutout) */
 [data-theme="dark"] .comete-logo--brand .comete-logo__light {
-  display: none;
+	display: none;
 }
 
 [data-theme="dark"] .comete-logo--brand .comete-logo__dark {
-  display: block;
+	display: block;
 }
 
 /* Neutral: always DarkBody (evenodd compound, solid fill) */
 .comete-logo--neutral .comete-logo__light {
-  display: none;
+	display: none;
 }
 
 .comete-logo--neutral .comete-logo__dark {
-  display: block;
+	display: block;
 }
 
 /* Inverse: always DarkBody (evenodd compound, gradient fill) */
 .comete-logo--inverse .comete-logo__light {
-  display: none;
+	display: none;
 }
 
 .comete-logo--inverse .comete-logo__dark {
-  display: block;
+	display: block;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -110,9 +110,9 @@
 
 /* Inverse dark: LightBody (identical appearance to light-brand) */
 [data-theme="dark"] .comete-logo--inverse .comete-logo__light {
-  display: block;
+	display: block;
 }
 
 [data-theme="dark"] .comete-logo--inverse .comete-logo__dark {
-  display: none;
+	display: none;
 }
