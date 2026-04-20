@@ -8,13 +8,13 @@
 // are thin wrappers around this helper.
 //
 // Layout rules:
-//   format="icon"                → just `ProductIcon` (square).
-//   suffix="none"                → 144×32 wordmark + icon overlay.
-//   suffix="right" (non-comete)  → wordmark + icon overlay + suffix inline.
-//   suffix="bottom" (non-comete) → wordmark + icon overlay, suffix scaled 0.6
-//                                   on a second row, right-aligned.
-//   suffix="bottom" (comete)     → wordmark + icon + "gestion pour la
-//                                   sécurité privée" tagline below.
+//   format="icon"                  → just `ProductIcon` (square).
+//   particle="none"               → 144×32 wordmark + icon overlay.
+//   particle="inline" (non-comete)→ wordmark + icon overlay + suffix inline.
+//   particle="column" (non-comete)→ wordmark + icon overlay, suffix scaled 0.6
+//                                    on a second row.
+//   particle="column" (comete)    → wordmark + icon + "gestion pour la
+//                                    sécurité privée" tagline below.
 //
 // Fallback colors (`colors` prop) are applied as CSS custom-property
 // overrides on the wrapper — `ProductIcon`, `ProductRootName`, and
@@ -39,8 +39,8 @@ import type {
 	LogoAppearance,
 	LogoColors,
 	LogoFormat,
+	LogoParticle,
 	LogoProduct,
-	LogoSuffix,
 } from "../types";
 import { ProductIcon, getProductIconX } from "./ProductIcon";
 import { ProductRootName } from "./ProductRootName";
@@ -58,8 +58,8 @@ export interface LogoFrameProps {
 	appearance?: LogoAppearance;
 	/** Display format. @default "logo" */
 	format?: LogoFormat;
-	/** Suffix display mode. @default "right" */
-	suffix?: LogoSuffix;
+	/** Particle display mode. @default "inline" */
+	particle?: LogoParticle;
 	/** Rendered row height in pixels. @default 32 */
 	size?: number;
 	/** Optional explicit colour overrides (bypasses CSS tokens). */
@@ -81,12 +81,24 @@ const SUFFIX_PRODUCT_MAP: Record<
 	mce: "mce",
 	academie: "academie",
 	club: "club",
+	cafe: "cafe",
 };
 
-// Scale applied to the suffix on `suffix="bottom"` (matches legacy column layout).
+/** Hardcoded particle placement per product. */
+const PARTICLE_POSITION: Record<Exclude<FrameProduct, "comete">, { inline: "right" | "left"; column: "top" | "bottom" }> = {
+	ontime:   { inline: "right", column: "bottom" },
+	link:     { inline: "right", column: "bottom" },
+	bi:       { inline: "right", column: "bottom" },
+	mce:      { inline: "right", column: "bottom" },
+	academie: { inline: "right", column: "bottom" },
+	club:     { inline: "right", column: "bottom" },
+	cafe:     { inline: "left",  column: "top" },
+};
+
+// Scale applied to the suffix on `particle="column"` (matches legacy column layout).
 const COLUMN_SCALE = 0.6;
 
-// Tagline viewBox for comete bottom suffix (= BOTTOM_VIEWBOX - wordmark row).
+// Tagline viewBox for comete column particle (= BOTTOM_VIEWBOX - wordmark row).
 const COMETE_TAGLINE_VIEWBOX = "0 0 141 7";
 // Default subtle colour used for the tagline paths when no CSS tokens exist.
 const FALLBACK_SUBTLE = "#6F8488";
@@ -177,7 +189,7 @@ export function LogoFrame({
 	product,
 	appearance = "brand",
 	format = "logo",
-	suffix = "right",
+	particle = "inline",
 	size = 32,
 	colors,
 	className,
@@ -223,9 +235,9 @@ export function LogoFrame({
 		</span>
 	);
 
-	// Comete — suffix is the tagline (or nothing).
+	// Comete — particle is the tagline (or nothing).
 	if (product === "comete") {
-		if (suffix !== "bottom") {
+		if (particle !== "column") {
 			return (
 				<span
 					className={cls}
@@ -235,7 +247,7 @@ export function LogoFrame({
 				</span>
 			);
 		}
-		// suffix="bottom" → wordmark above, tagline below at y≈35 (3u gap).
+		// particle="column" → wordmark above, tagline below at y≈35 (3u gap).
 		return (
 			<span
 				className={cls}
@@ -255,10 +267,11 @@ export function LogoFrame({
 		);
 	}
 
-	// Non-comete products — map to a ProductSuffix (when suffix !== "none").
+	// Non-comete products — map to a ProductSuffix (when particle !== "none").
 	const suffixProduct = SUFFIX_PRODUCT_MAP[product];
+	const pos = PARTICLE_POSITION[product];
 
-	if (suffix === "none") {
+	if (particle === "none") {
 		return (
 			<span
 				className={cls}
@@ -269,52 +282,40 @@ export function LogoFrame({
 		);
 	}
 
-	if (suffix === "right") {
-		// Row layout — wordmark + suffix side by side. The suffix viewBox
-		// starts at x=144, so the natural whitespace between wordmark and
-		// suffix is baked in and requires no gap management here.
+	if (particle === "inline") {
+		const gap = (11 * size) / 32;
+		const suffixEl = <ProductSuffix product={suffixProduct} appearance={appearance} size={size} />;
 		return (
-			<span
-				className={cls}
-				style={{
-					display: "inline-flex",
-					alignItems: "center",
-					lineHeight: 0,
-					...vars,
-				}}
-			>
+			<span className={cls} style={{ display: "inline-flex", alignItems: "center", lineHeight: 0, ...vars }}>
+				{pos.inline === "left" && <><span style={{ marginRight: gap }}>{suffixEl}</span></>}
 				{wordmarkRow}
-				<ProductSuffix
-					product={suffixProduct}
-					appearance={appearance}
-					size={size}
-				/>
+				{pos.inline === "right" && suffixEl}
 			</span>
 		);
 	}
 
-	// suffix === "bottom" → wordmark row + suffix scaled 0.6 on row 2,
-	// right-aligned to the wordmark's right edge.
+	// particle === "column" → wordmark row + suffix scaled 0.6 on row 2.
 	const suffixSize = size * COLUMN_SCALE;
+	const gap = (3 * size) / 32;
+	const suffixEl = (
+		<span style={pos.column === "bottom" ? { marginTop: gap } : { marginBottom: gap }}>
+			<ProductSuffix product={suffixProduct} appearance={appearance} size={suffixSize} />
+		</span>
+	);
 	return (
 		<span
 			className={cls}
 			style={{
 				display: "inline-flex",
 				flexDirection: "column",
-				alignItems: "flex-end",
+				alignItems: pos.column === "bottom" ? "flex-end" : "flex-start",
 				lineHeight: 0,
 				...vars,
 			}}
 		>
+			{pos.column === "top" && suffixEl}
 			{wordmarkRow}
-			<span style={{ marginTop: (3 * size) / 32 }}>
-				<ProductSuffix
-					product={suffixProduct}
-					appearance={appearance}
-					size={suffixSize}
-				/>
-			</span>
+			{pos.column === "bottom" && suffixEl}
 		</span>
 	);
 }

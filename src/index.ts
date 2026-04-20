@@ -9,6 +9,7 @@ export { Bi } from "./logos/Bi";
 export { Academie } from "./logos/Academie";
 export { Club } from "./logos/Club";
 export { Mce } from "./logos/Mce";
+export { CafeComete } from "./logos/CafeComete";
 export { MyComete } from "./logos/MyComete";
 export { logoRegistry } from "./registry";
 
@@ -28,6 +29,7 @@ export type {
 
 // Types
 export type {
+	LogoParticle,
 	LogoSuffix,
 	LogoAppearance,
 	LogoColors,

@@ -1,4 +1,5 @@
 import { Academie } from "./logos/Academie";
+import { CafeComete } from "./logos/CafeComete";
 import { Bi } from "./logos/Bi";
 import { Club } from "./logos/Club";
 import { Comete } from "./logos/Comete";
@@ -16,5 +17,6 @@ export const logoRegistry: LogoRegistry = {
 	academie: Academie,
 	club: Club,
 	mce: Mce,
+	cafe: CafeComete,
 	mycomete: MyComete,
 };

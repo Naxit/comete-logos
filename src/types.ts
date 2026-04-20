@@ -9,8 +9,11 @@ export type LogoFormat = "icon" | "logo";
 /** @deprecated Use LogoFormat instead. */
 export type LogoType = LogoFormat;
 
-/** Suffix display mode for product logos. @default "right" */
-export type LogoSuffix = "none" | "right" | "bottom";
+/** Particle display mode for product logos. @default "inline" */
+export type LogoParticle = "none" | "inline" | "column";
+
+/** @deprecated Use LogoParticle instead. */
+export type LogoSuffix = LogoParticle;
 
 /** Available product names. */
 export type LogoProduct =
@@ -21,6 +24,7 @@ export type LogoProduct =
 	| "academie"
 	| "club"
 	| "mce"
+	| "cafe"
 	| "mycomete";
 
 /**
@@ -48,8 +52,8 @@ export interface LogoProps extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
 	appearance?: LogoAppearance;
 	/** Display format: icon only or full logo. @default "logo" */
 	format?: LogoFormat;
-	/** Suffix display mode for product logos. @default "right" */
-	suffix?: LogoSuffix;
+	/** Particle display mode for product logos. @default "inline" */
+	particle?: LogoParticle;
 	/** Rendered height in pixels. Width scales proportionally. @default 32 */
 	size?: number;
 	/**

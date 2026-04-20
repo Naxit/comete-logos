@@ -64,6 +64,10 @@ export const PRODUCT_LAYOUTS = {
 		rowViewBox: "0 0 350 32",
 		productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 348.9)}, ${r(COLUMN_Y - COLUMN_SCALE * 2.1)}) scale(${COLUMN_SCALE})`,
 	},
+	cafe: {
+		rowViewBox: "0 0 214 32",
+		productNameTransform: `translate(${r(RIGHT_EDGE - COLUMN_SCALE * 56.5)}, ${r(COLUMN_Y - COLUMN_SCALE * 0)}) scale(${COLUMN_SCALE})`,
+	},
 } as const;
 
 /** Round to 2 decimal places for readable SVG transform values. */
