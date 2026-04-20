@@ -29,7 +29,7 @@ export type {
 
 // Types
 export type {
-	LogoParticle,
+	LogoTaglineAlign,
 	LogoSuffix,
 	LogoAppearance,
 	LogoColors,

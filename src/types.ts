@@ -9,11 +9,11 @@ export type LogoFormat = "icon" | "logo";
 /** @deprecated Use LogoFormat instead. */
 export type LogoType = LogoFormat;
 
-/** Particle display mode for product logos. @default "inline" */
-export type LogoParticle = "none" | "inline" | "column";
+/** TaglineAlign display mode for product logos. @default "inline" */
+export type LogoTaglineAlign = "none" | "inline" | "column";
 
-/** @deprecated Use LogoParticle instead. */
-export type LogoSuffix = LogoParticle;
+/** @deprecated Use LogoTaglineAlign instead. */
+export type LogoSuffix = LogoTaglineAlign;
 
 /** Available product names. */
 export type LogoProduct =
@@ -52,8 +52,8 @@ export interface LogoProps extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
 	appearance?: LogoAppearance;
 	/** Display format: icon only or full logo. @default "logo" */
 	format?: LogoFormat;
-	/** Particle display mode for product logos. @default "inline" */
-	particle?: LogoParticle;
+	/** TaglineAlign display mode for product logos. @default "inline" */
+	taglineAlign?: LogoTaglineAlign;
 	/** Rendered height in pixels. Width scales proportionally. @default 32 */
 	size?: number;
 	/**

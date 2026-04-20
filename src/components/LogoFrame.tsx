@@ -9,11 +9,11 @@
 //
 // Layout rules:
 //   format="icon"                  → just `ProductIcon` (square).
-//   particle="none"               → 144×32 wordmark + icon overlay.
-//   particle="inline" (non-comete)→ wordmark + icon overlay + suffix inline.
-//   particle="column" (non-comete)→ wordmark + icon overlay, suffix scaled 0.6
+//   taglineAlign="none"               → 144×32 wordmark + icon overlay.
+//   taglineAlign="inline" (non-comete)→ wordmark + icon overlay + suffix inline.
+//   taglineAlign="column" (non-comete)→ wordmark + icon overlay, suffix scaled 0.6
 //                                    on a second row.
-//   particle="column" (comete)    → wordmark + icon + "gestion pour la
+//   taglineAlign="column" (comete)    → wordmark + icon + "gestion pour la
 //                                    sécurité privée" tagline below.
 //
 // Fallback colors (`colors` prop) are applied as CSS custom-property
@@ -39,7 +39,7 @@ import type {
 	LogoAppearance,
 	LogoColors,
 	LogoFormat,
-	LogoParticle,
+	LogoTaglineAlign,
 	LogoProduct,
 } from "../types";
 import { ProductIcon, getProductIconX } from "./ProductIcon";
@@ -58,8 +58,8 @@ export interface LogoFrameProps {
 	appearance?: LogoAppearance;
 	/** Display format. @default "logo" */
 	format?: LogoFormat;
-	/** Particle display mode. @default "inline" */
-	particle?: LogoParticle;
+	/** TaglineAlign display mode. @default "inline" */
+	taglineAlign?: LogoTaglineAlign;
 	/** Rendered row height in pixels. @default 32 */
 	size?: number;
 	/** Optional explicit colour overrides (bypasses CSS tokens). */
@@ -84,7 +84,7 @@ const SUFFIX_PRODUCT_MAP: Record<
 	cafe: "cafe",
 };
 
-/** Hardcoded particle placement per product. */
+/** Hardcoded taglineAlign placement per product. */
 const PARTICLE_POSITION: Record<Exclude<FrameProduct, "comete">, { inline: "right" | "left"; column: "top" | "bottom" }> = {
 	ontime:   { inline: "right", column: "bottom" },
 	link:     { inline: "right", column: "bottom" },
@@ -95,10 +95,10 @@ const PARTICLE_POSITION: Record<Exclude<FrameProduct, "comete">, { inline: "righ
 	cafe:     { inline: "left",  column: "top" },
 };
 
-// Scale applied to the suffix on `particle="column"` (matches legacy column layout).
+// Scale applied to the suffix on `taglineAlign="column"` (matches legacy column layout).
 const COLUMN_SCALE = 0.6;
 
-// Tagline viewBox for comete column particle (= BOTTOM_VIEWBOX - wordmark row).
+// Tagline viewBox for comete column taglineAlign (= BOTTOM_VIEWBOX - wordmark row).
 const COMETE_TAGLINE_VIEWBOX = "0 0 141 7";
 // Default subtle colour used for the tagline paths when no CSS tokens exist.
 const FALLBACK_SUBTLE = "#6F8488";
@@ -189,7 +189,7 @@ export function LogoFrame({
 	product,
 	appearance = "brand",
 	format = "logo",
-	particle = "inline",
+	taglineAlign = "inline",
 	size = 32,
 	colors,
 	className,
@@ -235,9 +235,9 @@ export function LogoFrame({
 		</span>
 	);
 
-	// Comete — particle is the tagline (or nothing).
+	// Comete — taglineAlign is the tagline (or nothing).
 	if (product === "comete") {
-		if (particle !== "column") {
+		if (taglineAlign !== "column") {
 			return (
 				<span
 					className={cls}
@@ -247,7 +247,7 @@ export function LogoFrame({
 				</span>
 			);
 		}
-		// particle="column" → wordmark above, tagline below at y≈35 (3u gap).
+		// taglineAlign="column" → wordmark above, tagline below at y≈35 (3u gap).
 		return (
 			<span
 				className={cls}
@@ -267,11 +267,11 @@ export function LogoFrame({
 		);
 	}
 
-	// Non-comete products — map to a ProductSuffix (when particle !== "none").
+	// Non-comete products — map to a ProductSuffix (when taglineAlign !== "none").
 	const suffixProduct = SUFFIX_PRODUCT_MAP[product];
 	const pos = PARTICLE_POSITION[product];
 
-	if (particle === "none") {
+	if (taglineAlign === "none") {
 		return (
 			<span
 				className={cls}
@@ -282,7 +282,7 @@ export function LogoFrame({
 		);
 	}
 
-	if (particle === "inline") {
+	if (taglineAlign === "inline") {
 		const gap = (11 * size) / 32;
 		const suffixEl = <ProductSuffix product={suffixProduct} appearance={appearance} size={size} />;
 		return (
@@ -294,7 +294,7 @@ export function LogoFrame({
 		);
 	}
 
-	// particle === "column" → wordmark row + suffix scaled 0.6 on row 2.
+	// taglineAlign === "column" → wordmark row + suffix scaled 0.6 on row 2.
 	const suffixSize = size * COLUMN_SCALE;
 	const gap = (3 * size) / 32;
 	const suffixEl = (
