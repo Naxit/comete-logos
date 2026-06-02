@@ -1,41 +1,40 @@
 // Styles
 import "./styles/logos.css";
 
-// Logos
-export { Comete } from "./logos/Comete";
-export { OnTime } from "./logos/OnTime";
-export { Link } from "./logos/Link";
-export { Bi } from "./logos/Bi";
-export { Academie } from "./logos/Academie";
-export { Club } from "./logos/Club";
-export { Mce } from "./logos/Mce";
-export { CafeComete } from "./logos/CafeComete";
-export { MyComete } from "./logos/MyComete";
-export { logoRegistry } from "./registry";
-
+export type { ProductIconProps } from "./components/ProductIcon";
 // Composable logo parts
 export { ProductIcon } from "./components/ProductIcon";
-export type { ProductIconProps } from "./components/ProductIcon";
-export { ProductRootName } from "./components/ProductRootName";
 export type { ProductRootNameProps } from "./components/ProductRootName";
-export {
-	ProductSuffix,
-	getProductSuffixMetrics,
-} from "./components/ProductSuffix";
+export { ProductRootName } from "./components/ProductRootName";
 export type {
-	ProductSuffixProps,
-	ProductSuffixProduct,
+  ProductSuffixProduct,
+  ProductSuffixProps,
 } from "./components/ProductSuffix";
+export {
+  getProductSuffixMetrics,
+  ProductSuffix,
+} from "./components/ProductSuffix";
+export { Academie } from "./logos/Academie";
+export { Bi } from "./logos/Bi";
+export { CafeComete } from "./logos/CafeComete";
+export { Club } from "./logos/Club";
+// Logos
+export { Comete } from "./logos/Comete";
+export { Link } from "./logos/Link";
+export { Mce } from "./logos/Mce";
+export { MyComete } from "./logos/MyComete";
+export { OnTime } from "./logos/OnTime";
+export { logoRegistry } from "./registry";
 
 // Types
 export type {
-	LogoTaglineAlign,
-	LogoSuffix,
-	LogoAppearance,
-	LogoColors,
-	LogoFormat,
-	LogoProduct,
-	LogoProps,
-	LogoRegistry,
-	LogoType,
+  LogoAppearance,
+  LogoColors,
+  LogoFormat,
+  LogoProduct,
+  LogoProps,
+  LogoRegistry,
+  LogoSuffix,
+  LogoTaglineAlign,
+  LogoType,
 } from "./types";

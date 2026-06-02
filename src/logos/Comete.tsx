@@ -10,7 +10,7 @@ import { LogoFrame } from "../components/LogoFrame";
 import type { LogoProps } from "../types";
 
 export function Comete(props: LogoProps): ReactElement {
-	return <LogoFrame product="comete" {...props} />;
+  return <LogoFrame product="comete" {...props} />;
 }
 
 Comete.displayName = "Comete";

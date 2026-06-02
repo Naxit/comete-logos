@@ -1,6 +1,6 @@
 import { Academie } from "./logos/Academie";
-import { CafeComete } from "./logos/CafeComete";
 import { Bi } from "./logos/Bi";
+import { CafeComete } from "./logos/CafeComete";
 import { Club } from "./logos/Club";
 import { Comete } from "./logos/Comete";
 import { Link } from "./logos/Link";
@@ -10,13 +10,13 @@ import { OnTime } from "./logos/OnTime";
 import type { LogoRegistry } from "./types";
 
 export const logoRegistry: LogoRegistry = {
-	comete: Comete,
-	ontime: OnTime,
-	link: Link,
-	bi: Bi,
-	academie: Academie,
-	club: Club,
-	mce: Mce,
-	cafe: CafeComete,
-	mycomete: MyComete,
+  comete: Comete,
+  ontime: OnTime,
+  link: Link,
+  bi: Bi,
+  academie: Academie,
+  club: Club,
+  mce: Mce,
+  cafe: CafeComete,
+  mycomete: MyComete,
 };

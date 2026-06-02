@@ -23,13 +23,13 @@ export const ROOT_NAME_NATURAL_WIDTH = 144;
 export const ROOT_NAME_NATURAL_HEIGHT = 32;
 
 export interface ProductRootNameProps
-	extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
-	/** Appearance (drives CSS custom properties). @default "brand" */
-	appearance?: LogoAppearance;
-	/** Rendered height in pixels. Width scales proportionally. @default 32 */
-	size?: number;
-	/** Additional CSS class. */
-	className?: string;
+  extends Omit<SVGAttributes<SVGSVGElement>, "color"> {
+  /** Appearance (drives CSS custom properties). @default "brand" */
+  appearance?: LogoAppearance;
+  /** Rendered height in pixels. Width scales proportionally. @default 32 */
+  size?: number;
+  /** Additional CSS class. */
+  className?: string;
 }
 
 /**
@@ -41,32 +41,32 @@ export interface ProductRootNameProps
  * parent `Logo` wrapper.
  */
 export function ProductRootName({
-	appearance = "brand",
-	size = 32,
-	className,
-	...rest
+  appearance = "brand",
+  size = 32,
+  className,
+  ...rest
 }: ProductRootNameProps): ReactElement {
-	const rootClass = [`comete-logo--${appearance}`, className]
-		.filter(Boolean)
-		.join(" ");
-	const width = (size * ROOT_NAME_NATURAL_WIDTH) / ROOT_NAME_NATURAL_HEIGHT;
+  const rootClass = [`comete-logo--${appearance}`, className]
+    .filter(Boolean)
+    .join(" ");
+  const width = (size * ROOT_NAME_NATURAL_WIDTH) / ROOT_NAME_NATURAL_HEIGHT;
 
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox={ROOT_NAME_VIEWBOX}
-			width={width}
-			height={size}
-			fill="none"
-			aria-hidden="true"
-			className={rootClass}
-			{...rest}
-		>
-			{COMETE_TEXT_PATHS.map((d) => (
-				<path key={d} d={d} style={{ fill: "var(--_logo-text)" }} />
-			))}
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={ROOT_NAME_VIEWBOX}
+      width={width}
+      height={size}
+      fill="none"
+      aria-hidden="true"
+      className={rootClass}
+      {...rest}
+    >
+      {COMETE_TEXT_PATHS.map((d) => (
+        <path key={d} d={d} style={{ fill: "var(--_logo-text)" }} />
+      ))}
+    </svg>
+  );
 }
 
 ProductRootName.displayName = "ProductRootName";

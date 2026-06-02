@@ -7,7 +7,7 @@ import { LogoFrame } from "../components/LogoFrame";
 import type { LogoProps } from "../types";
 
 export function CafeComete(props: LogoProps): ReactElement {
-	return <LogoFrame product="cafe" {...props} />;
+  return <LogoFrame product="cafe" {...props} />;
 }
 
 CafeComete.displayName = "CafeComete";
